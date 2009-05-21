@@ -11,6 +11,7 @@
  * @param paper {Raphael} - rendering target
  */
 function Unit(config, paper) {
+
   if (!config.fill_color) {
     config.fill_color = '#fff';
   }
@@ -21,7 +22,7 @@ function Unit(config, paper) {
   this.x = config.x;
   this.y = config.y;
   this.theta = 0;
-
+  this.selected = false;
   /**
    * paper.set() of troops
    */
@@ -59,6 +60,12 @@ function Unit(config, paper) {
     };
     current_troop = new Troop(troop_config, paper);
 
+    // TODO: Make a "createDelegate" function, if I
+    // end up doing this too many times:
+    var self = this;
+    current_troop.base.node.onclick = function() {
+      self.select();
+    };
     // Add troop to both set and matrix.
     this.troops[current_row].push(current_troop);
     this.troop_set.push(current_troop.base);
@@ -116,4 +123,29 @@ function Unit(config, paper) {
     var distance = direction*Convert.inch(inches);
     this.troop_set.translate(0, distance);
   };
+
+  /**
+   * select - makes this unit the active selection
+   */
+  this.select = function() {
+    if (this.selected) {
+      this.unselect();
+    } else {
+      this.selected = true;
+      this.troop_set.attr({stroke: '#949',
+			   'stroke-width': 2});
+    }
+  };
+
+  /**
+   * unselect - removes this from the active selection
+   */
+  this.unselect = function() {
+    if (this.selected) {
+      this.selected = false;
+      this.troop_set.attr({stroke: '#000',
+			   'stroke-width': 1});
+    }
+  };
+
 }
