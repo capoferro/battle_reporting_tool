@@ -68,8 +68,6 @@ var Field = function(config, paper) {
 		   fill: config.fill_color
 		  });
 };
-var field_4_x_6 = new Field({x: 0,
-			     y: 0}, paper);
 
 ////////////////////////////////////////////////////////TODO: Split files.
 
