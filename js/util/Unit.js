@@ -11,7 +11,7 @@
  * @param paper {Raphael} - rendering target
  */
 function Unit(config, paper) {
-
+  this.instantiated = false;
   if (!config.fill_color) {
     config.fill_color = '#fff';
   }
@@ -19,7 +19,13 @@ function Unit(config, paper) {
   this.model_count = config.model_count;
   this.base = config.base;
   this.rotation = 0;
-  this.x = config.x;
+  this.x = function(){
+    if (!this.instantiated) {
+      return config.x;
+    } else {
+      return this.troops[0][0].base.node.getAttribute('x');
+    }
+  };
   this.y = config.y;
   this.theta = 0;
   this.selected = false;
@@ -53,7 +59,7 @@ function Unit(config, paper) {
   while (counter < this.model_count) {
 
     troop_config = {
-      x: this.x+(this.base.width*current_col),
+      x: this.x()+(this.base.width*current_col),
       y: this.y+(this.base.height*current_row),
       base: this.base,
       fill_color: config.fill_color
@@ -96,12 +102,12 @@ function Unit(config, paper) {
   this.wheel = function(inches, left) {
     var degree_mod = 1;
     var unit_width = this.files * this.base.width;
-    var rotation_center_x = this.x + unit_width;
+    var rotation_center_x = this.x() + unit_width;
     var rotation_center_y = this.y;
     var arc_length = Convert.inch(inches);
     if (left) {
       degree_mod = -1;
-      rotation_center_x = this.x;
+      rotation_center_x = this.x();
     }
 
     this.theta = arc_length/unit_width;
@@ -148,4 +154,8 @@ function Unit(config, paper) {
     }
   };
 
+  this.show_controls = function() {
+
+  };
+  this.instantiated = true;
 }
