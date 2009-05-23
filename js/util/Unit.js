@@ -39,7 +39,6 @@ function Unit(config, paper) {
     this.theta =      (config.theta === undefined)?      0      : config.theta;
     this.fill_color = (config.fill_color === undefined)? '#fff' : config.fill_color;
     this.selected =   (config.selected === undefined)?   false  : true;
-
     // The following need to be reset every time there is a redraw.
     /**
      * paper.set() of troops
@@ -117,19 +116,57 @@ function Unit(config, paper) {
    * @param left {boolean} - If true, go left. If false, go right.
    */
   this.wheel = function(inches, left) {
-    var degree_mod = 1;
+    if (left == undefined) {
+      left = (this.theta > 0)? false : true;
+    }
+    // Set up the unit
+    var arc_length = Convert.inch(inches);
     var unit_width = this.files * this.base.width;
+    var new_config = this.get_config();
+    var direction = (left)?-1:1;
+    var sub_theta = direction * arc_length/unit_width;
+    new_config.theta = sub_theta + this.theta;
+
+    // The variable names are referencing a diagram I have drawn out.
+    if ( (left && this.theta > 0) || (!left && this.theta < 0) ){
+      // Figure out where the first reference x,y will be.
+      var one_x = this.x + (unit_width * Math.cos(this.theta));
+      var one_y = this.y + (unit_width * Math.sin(this.theta));
+      var one = this.paper.rect(one_x, one_y, 5, 5);
+      one.attr('fill', 'white');
+      tmp('one_x_y');
+      // Figure out what the difference of the angle is, to figure out how far back we need to go.
+      var two_theta = (this.theta - sub_theta);
+      // The position of the unit after it's been unwheeled
+      var three_x = one_x + Math.cos(two_theta);
+      var three_y = one_y - Math.sin(two_theta);
+      var two = this.paper.rect(three_x, three_y, 5, 5);
+      two.attr('fill', 'gray');
+      tmp('three_x_y: ' + Math.cos(two_theta)+','+Math.sin(two_theta) );
+      // The final position of the unit, prewheel
+      var four_x = three_x - unit_width;
+      var four_y = three_y;
+      var three = this.paper.rect(four_x, four_y, 5, 5);
+      three.attr('fill', 'black');
+      tmp('four_x_y');
+      new_config.x = four_x;
+      new_config.y = four_y;
+      // Set the wheel for the redraw.
+      new_config.theta = two_theta;
+    }
+    this.draw(new_config);
+
+    // Do the rotation
     var rotation_center_x = this.x + unit_width;
     var rotation_center_y = this.y;
-    var arc_length = Convert.inch(inches);
+    this.theta = sub_theta + this.theta;
     if (left) {
-      degree_mod = -1;
       rotation_center_x = this.x;
+      this.theta = -1 * Math.abs(this.theta);
     }
+    tmp('THETA: ' + this.theta);
+    this.troop_set.rotate(Convert.degrees(this.theta), rotation_center_x, rotation_center_y);
 
-    this.theta = this.theta + arc_length/unit_width;
-    this.troop_set.rotate(degree_mod*Convert.degrees(this.theta), rotation_center_x, rotation_center_y);
-    this.rotation = degree_mod*Convert.degrees(this.theta);
   };
 
   /**
@@ -144,12 +181,12 @@ function Unit(config, paper) {
       direction = 1;
     }
     var distance = direction*Convert.inch(inches);
+    var x_direction = -1;
     var x_offset = distance*Math.sin(this.theta);
     var y_offset = distance*Math.cos(this.theta);
     var new_config = this.get_config();
-    new_config.x -= x_offset;
+    new_config.x += x_direction * x_offset;
     new_config.y += y_offset;
-    new_config.fill_color = "black";
     this.draw(new_config);
     // TODO: Is there a better way to do this? Need
     // to force a reevaluation of the unit's current
@@ -186,7 +223,6 @@ function Unit(config, paper) {
   };
 
   this.get_config = function() {
-    inspect(this);
     return {
       files: this.files,
       model_count: this.model_count,

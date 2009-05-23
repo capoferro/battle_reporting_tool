@@ -8,4 +8,5 @@ include('js/util/Troop.js');
 include('js/util/Base.js');
 include('js/util/Field.js');
 include('js/util/helper.js');
+include('scratch.js');
 include('js/util/init.js');
