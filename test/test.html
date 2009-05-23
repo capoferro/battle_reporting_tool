@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="|UTF-8|"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <title>Skirmisher Unit Tests</title>
+    <script language="JavaScript" src="jsunit/app/jsUnitCore.js"></script>
+    <script language="JavaScript" src="../js/util/skirmisher_test.js"></script>
+    <script language="JavaScript" src="../js/util/Convert.js"></script>
+    <script language="JavaScript" src="../js/util/Unit.js"></script>
+    <script language="JavaScript" src="../js/util/Troop.js"></script>
+    <script language="JavaScript" src="../js/util/Base.js"></script>
+    <script language="JavaScript" src="../js/util/Field.js"></script>
+    <script language="JavaScript" src="../js/util/helper.js"></script>
+    <script language="JavaScript" src="../js/util/init.js"></script>
+    <script language="JavaScript">
+      function testConvertInches(){
+      assertEquals("Should use this formula: inches*10; 1 * 10 = ", 10, Convert.inch(1));
+      assertEquals("Should use this formula: inches*10; -1 * 10 = ", -10, Convert.inch(-1));
+      assertEquals("Should use this formula: inches*10; 0 * 10 = ", 0, Convert.inch(0));
+      assertEquals("Should use this formula: inches*10; 999 * 10 =", 9990, Convert.inch(999));
+      }
+      function testConvertFoot(){
+      assertEquals("Should use this formula: feet*120; 1 * 120 = ", 120, Convert.foot(1));
+      assertEquals("Should use this formula: feet*120; -1 * 120 = ", -120, Convert.foot(-1));
+      assertEquals("Should use this formula: feet*120; 0 * 120 = ", 0, Convert.foot(0));
+      assertEquals("Should use this formula: feet*120; 999 * 120 =", 119880, Convert.foot(999));
+      }
+      function testConvertMm(){
+      assertEquals("Should use this formula: mm/2.5; 1 / 2.5 = ", .4, Convert.mm(1));
+      assertEquals("Should use this formula: mm/2.5; -1 / 2.5 = ", -.4, Convert.mm(-1));
+      assertEquals("Should use this formula: mm/2.5; 0 / 2.5 = ", 0, Convert.mm(0));
+      assertEquals("Should use this formula: mm/2.5; 999 / 2.5 =", 399.6, Convert.mm(999));
+      }
+      function testConvertDegrees(){
+      assertTrue("Should use this formula: radians*180/Math.PI; 1 * 180 / Math.PI > 57.295 ", (Convert.degrees(1) > 57.295));
+      assertTrue("Should use this formula: radians*180/Math.PI; 1 * 180 / Math.PI < 57.296 ", (Convert.degrees(1) < 57.296));
+      assertTrue("Should use this formula: radians*180/Math.PI; -1 * 180 / Math.PI > 57.295 ", (Convert.degrees(-1) < -57.295));
+      assertTrue("Should use this formula: radians*180/Math.PI; -1 * 180 / Math.PI < 57.296 ", (Convert.degrees(-1) > -57.296));
+      assertEquals("Should use this formula: radians*180/Math.PI; 0 * 180 / Math.PI = ", 0, Convert.degrees(0));
+      assertTrue("Should use this formula: radians*180/Math.PI; 999 * 180 / Math.PI > 57238.483 ", (Convert.degrees(999) > 57238.483));
+      assertTrue("Should use this formula: radians*180/Math.PI; 999 * 180 / Math.PI < 57238.484 ", (Convert.degrees(999) < 57238.484));
+      } 
+    </script>
+  </head>
+  <body>
+    <h1>Skirmisher Unit Tests</h1>
+  </body>
+</html>
