@@ -22,8 +22,8 @@ var Constants = {
   UP: -1,
   RIGHT: 1,
   DOWN: 1,
-  FORWARD: 1,
-  BACKWARD: -1,
+  FORWARD: -1,
+  BACKWARD: 1,
   MISSING_VALUES_MESSAGE: 'Config is missing: '
 };
 

@@ -15,7 +15,13 @@ function scratch(paper){
   			}, paper);
   test_unit5.wheel(wheel, Constants.RIGHT);
   test_unit5.wheel(2, Constants.LEFT);
-  test_unit5.move(3, true);
+  test_unit5.move(3, Constants.FORWARD);
+  test_unit5.wheel(wheel*2, Constants.RIGHT);
+  test_unit5.wheel(1, Constants.LEFT);
+  test_unit5.move(3, Constants.FORWARD);
+  test_unit5.wheel(wheel, Constants.RIGHT);
+  test_unit5.wheel(5, Constants.LEFT);
+  test_unit5.move(3, Constants.FORWARD);
   //   tmp('-----5--purple---');
   // var test_unit4 = new Unit({
   // 			  files: files,

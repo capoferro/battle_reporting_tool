@@ -26,6 +26,7 @@ function Unit(config, paper) {
    * @param config {hash} - see {@link Unit}
    */
   this.draw = function(config){
+
     if (config.files === undefined)      {throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.files');} else {this.files = config.files;};
     if (config.model_count === undefined){throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.model_count');} else {this.model_count = config.model_count;}
     if (config.base === undefined)       {throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.base');} else {this.base = config.base;}
@@ -72,17 +73,17 @@ function Unit(config, paper) {
     var counter = 0;
     while (counter < this.model_count) {
       current_troop = new Troop({
-				  x: this.x+(this.base.width*current_col),
-				  y: this.y+(this.base.height*current_row),
-				  base: this.base,
-				  fill_color: config.fill_color
-				}, paper);
+                                  x: this.x+(this.base.width*current_col),
+                                  y: this.y+(this.base.height*current_row),
+                                  base: this.base,
+                                  fill_color: config.fill_color
+                                }, paper);
 
       // TODO: Make a "createDelegate" function, if I
       // end up doing this too many times:
       var self = this;
       current_troop.base.node.onclick = function() {
-	self.select();
+        self.select();
       };
       // Add troop to both set and matrix, so I have
       // different ways of accessing the troop:
@@ -94,20 +95,20 @@ function Unit(config, paper) {
 
       // Cycle current_[col|row] to build ranks and files
       if (current_col%this.files == this.files-1) {
-	current_col = 0;
-	current_row++;
+        current_col = 0;
+        current_row++;
       } else {
-	current_col++;
+        current_col++;
       }
 
     }
 
     // If the back row is incomplete, move each base so the back row is centered.
     if (current_col !== 0) {
-      var offset = (this.files-current_col)/2*this.base.width;
+      var offset = (this.files-current_col)/2 * this.base.width;
       var back_row = this.troops[current_row];
       for (var k = 0; k < back_row.length; k++) {
-	back_row[k].base.translate(offset, 0);
+        back_row[k].base.translate(offset, 0);
       }
     }
     // Evaluate the current set wheel that was passed in by the config.
@@ -121,37 +122,63 @@ function Unit(config, paper) {
   this.wheel = function(inches, direction) {
     if (direction === undefined){
       if (this.wheel_direction === undefined) {
-	throw new Error('Wheel direction not given, and no prior wheel direction specified');
+        throw new Error('Wheel direction not given, and no prior wheel direction specified');
       } else {
-	direction = this.wheel_direction;
+        direction = this.wheel_direction;
       }
     }
-    tmp('after undef: ' + inches + '" | ' + this.theta + ' theta');
+    // tmp('after undef: ' + inches + '" | ' + this.theta + ' theta');
+
+    // This conditional block is to allow this.draw()
+    // to call this.wheel without causing an infinite
+    // recursion loop.
     if (inches !== 0) {
       var distance = Convert.inch(inches);
       var new_config = this.get_config();
+      //
+      // Super Wheeling Action
+      //
+      // If we are wheeling the opposite way than the
+      // unit wheeled last time, then we need to do
+      // some unusual calculations.  (Wish I could
+      // draw a picture...!)
       if (direction !== this.wheel_direction){
-	tmp('NOT EQUAL: d='+direction+' wd='+this.wheel_direction);
-	new_config.theta = this.theta * -1;
-	new_config.x = this.x + (direction*(this.unit_width * Math.cos(new_config.theta) - this.unit_width));
-	new_config.y = this.y + (this.unit_width * Math.sin(new_config.theta));
-	tmp('Setting x,y: ' + (new_config.x-this.x) + ', ' + (new_config.y-this.y));
-	new_config.wheel_direction = direction;
+      // Steps:
+      // 1. Flip the angle, since we want to wheel
+      //    backwards from our new position to match
+      //    the current angle, just from a different
+      //    point of rotation.
+        new_config.theta = this.theta * -1;
+      // 2. Figure out where the forward most corner
+      //    of the unit is (left if the unit has
+      //    wheeled right in the past, right if the
+      //    unit has wheeled left in the past.)
+      //    NOTE: this.x and this.y are not going to
+      //          give you this, as those attributes
+      //          will only tell you where the left
+      //          corner has wheeled from.  If the
+      //          unit has wheeled to the right, then
+      //          this will be different than this.x
+      //          and this.y
+        new_config.x = this.x + (direction*(this.unit_width * Math.cos(new_config.theta) - this.unit_width));
+        new_config.y = this.y + (this.unit_width * Math.sin(new_config.theta));
+      // 3. Make sure we remember which way we intend
+      //    to wheel for the redraw.
+        new_config.wheel_direction = direction;
       }
+      // 4. Factor in the new wheel right before we
+      //    draw.
       new_config.theta += distance/this.unit_width;
+      // 5. Redraw!
       this.draw(new_config);
       return this;
-    }
+    } // 6. Using the calculated theta in the new
+      //    drawing, we can perform the proper
+      //    wheel.
     if (this.wheel_direction === Constants.LEFT) {
-      tmp('--');
-      tmp('L rot. on ('+this.x+', '+this.y+')');
-      tmp('--');
-      this.troop_set.rotate(this.wheel_direction*Convert.degrees(this.theta), this.x, this.y);
+      this.troop_set.rotate(this.wheel_direction * Convert.degrees(this.theta), this.x, this.y);
     } else {
-      tmp('--');
-      tmp('R rot. on ('+this.x+', '+this.y+')');
-      tmp('--');
-      this.troop_set.rotate(this.wheel_direction*Convert.degrees(this.theta), this.x + this.unit_width, this.y);
+      this.troop_set.rotate(this.wheel_direction * Convert.degrees(this.theta), this.x + this.unit_width, this.y);
     }
     return this;
   };
@@ -164,16 +191,12 @@ function Unit(config, paper) {
    * forward. If false, go backward.
    */
   this.move = function(inches, forward) {
-    var direction = -1;
-    if (!forward) {
-      direction = 1;
-    }
-    var distance = direction*Convert.inch(inches);
-    var x_direction = -1;
-    var x_offset = distance*Math.sin(this.theta);
-    var y_offset = distance*Math.cos(this.theta);
+    var distance = forward * Convert.inch(inches);
+    var x_offset = distance * Math.sin(this.theta);
+    var y_offset = distance * Math.cos(this.theta);
+    tmp('moving (x,y): ('+x_offset+','+y_offset+')');
     var new_config = this.get_config();
-    new_config.x += x_direction * x_offset;
+    new_config.x += x_offset;
     new_config.y += y_offset;
     this.draw(new_config);
     return this;
@@ -188,7 +211,7 @@ function Unit(config, paper) {
     } else {
       this.selected = true;
       this.troop_set.attr({stroke: '#949',
-			   'stroke-width': 2});
+                           'stroke-width': 2});
     }
   };
 
@@ -199,7 +222,7 @@ function Unit(config, paper) {
     if (this.selected) {
       this.selected = false;
       this.troop_set.attr({stroke: '#000',
-			   'stroke-width': 1});
+                           'stroke-width': 1});
     }
   };
 
