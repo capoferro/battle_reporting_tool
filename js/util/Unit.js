@@ -1,9 +1,4 @@
 /**
- * Class specific errors
- */
-var MISSING_VALUES_MESSAGE = 'Config is missing: ';
-
-/**
  * This holds all the troops, and provides unit-level actions
  * @class Unit
  * @param config {hash}- config object
@@ -31,14 +26,16 @@ function Unit(config, paper) {
    * @param config {hash} - see {@link Unit}
    */
   this.draw = function(config){
-    if (config.files === undefined)      {throw new Error (MISSING_VALUES_MESSAGE + 'config.files');} else {this.files = config.files;};
-    if (config.model_count === undefined){throw new Error (MISSING_VALUES_MESSAGE + 'config.model_count');} else {this.model_count = config.model_count;}
-    if (config.base === undefined)       {throw new Error (MISSING_VALUES_MESSAGE + 'config.base');} else {this.base = config.base;}
+    if (config.files === undefined)      {throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.files');} else {this.files = config.files;};
+    if (config.model_count === undefined){throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.model_count');} else {this.model_count = config.model_count;}
+    if (config.base === undefined)       {throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.base');} else {this.base = config.base;}
     this.x =          (config.x === undefined)?          0      : config.x;
     this.y =          (config.y === undefined)?          0      : config.y;
     this.theta =      (config.theta === undefined)?      0      : config.theta;
     this.fill_color = (config.fill_color === undefined)? '#fff' : config.fill_color;
     this.selected =   (config.selected === undefined)?   false  : true;
+    this.wheel_direction = (config.wheel_direction === undefined)? /* default to left */ Constants.LEFT : this.wheel_direction = config.wheel_direction;
+    this.unit_width = this.files * this.base.width;
     // The following need to be reset every time there is a redraw.
     /**
      * paper.set() of troops
@@ -113,103 +110,52 @@ function Unit(config, paper) {
 	back_row[k].base.translate(offset, 0);
       }
     }
+    // Evaluate the current set wheel that was passed in by the config.
+    this.wheel(0, this.direction);
   };
   /**
    * Perform a wheel - pivot on a front corner and turn.
    * @param inches {float} - Arc distance, in inches
    * @param left {boolean} - If true, go left. If false, go right.
    */
-  this.wheel = function(inches, left) {
-    if (left == undefined) {
-      left = (this.theta > 0)? false : true;
+  this.wheel = function(inches, direction) {
+    if (direction === undefined){
+      if (this.wheel_direction === undefined) {
+	throw new Error('Wheel direction not given, and no prior wheel direction specified');
+      } else {
+	direction = this.wheel_direction;
+      }
     }
-    // Set up the unit
-    var arc_length = Convert.inch(inches);
-    var unit_width = this.files * this.base.width;
-    var new_config = this.get_config();
-    var direction = (left)?-1:1;
-    var sub_theta = direction * arc_length/unit_width;
-    new_config.theta = sub_theta + this.theta;
-
-    // The variable names are referencing a diagram I have drawn out.
-    if ( (left && this.theta > 0) || (!left && this.theta < 0) ){
-      var x_one = unit_width * Math.cos(this.theta);
-      var y_one = unit_width * Math.sin(this.theta);
-      var theta_one = -1*arc_length/unit_width;
-      var theta_two = -1*this.theta - theta_one;
-      var x_two = x_one + direction*unit_width * Math.cos(this.theta);
-      var y_two = y_one + direction*unit_width * Math.sin(this.theta);
-      //
-      var xx = this.x;
-      var yy = this.y;
-      var test = this.get_config();
-      test.x = x_two + xx;
-      test.y = y_two + yy;
-      test.theta = 0;
-      this.draw(test);
-      this.x = xx;
-      this.y = yy;
-//
-      var x_final = x_two - unit_width + this.x;
-      var y_final = y_two + this.y;
-      tmp('final: ' + x_final + ',' + y_final);
-      var theta_final = -1*theta_two;
-      var unwheeled = this.unwheel(direction, arc_length, unit_width);
-
-      new_config.x = x_final;
-      new_config.y = y_final;
-      // Set the wheel for the redraw.
-      new_config.theta = theta_final;
+    tmp('after undef: ' + inches + '" | ' + this.theta + ' theta');
+    if (inches !== 0) {
+      var distance = Convert.inch(inches);
+      var new_config = this.get_config();
+      if (direction !== this.wheel_direction){
+	tmp('NOT EQUAL: d='+direction+' wd='+this.wheel_direction);
+	new_config.theta = this.theta * -1;
+	new_config.x = this.x + (direction*(this.unit_width * Math.cos(new_config.theta) - this.unit_width));
+	new_config.y = this.y + (this.unit_width * Math.sin(new_config.theta));
+	tmp('Setting x,y: ' + (new_config.x-this.x) + ', ' + (new_config.y-this.y));
+	new_config.wheel_direction = direction;
+      }
+      new_config.theta += distance/this.unit_width;
+      this.draw(new_config);
+      return this;
     }
-    this.draw(new_config);
-
-    // Do the rotation
-    var rotation_center_x = this.x + unit_width;
-    var rotation_center_y = this.y;
-    this.theta = sub_theta + this.theta;
-    if (left) {
-      rotation_center_x = this.x;
-      this.theta = -1 * Math.abs(this.theta);
+    if (this.wheel_direction === Constants.LEFT) {
+      tmp('--');
+      tmp('L rot. on ('+this.x+', '+this.y+')');
+      tmp('--');
+      this.troop_set.rotate(this.wheel_direction*Convert.degrees(this.theta), this.x, this.y);
+    } else {
+      tmp('--');
+      tmp('R rot. on ('+this.x+', '+this.y+')');
+      tmp('--');
+      this.troop_set.rotate(this.wheel_direction*Convert.degrees(this.theta), this.x + this.unit_width, this.y);
     }
-    tmp('THETA: ' + this.theta);
-    this.troop_set.rotate(Convert.degrees(this.theta), rotation_center_x, rotation_center_y);
-
+    return this;
   };
 
-  /**
-   * Used when unit is already wheeled and needs to wheel back the other way
-   * @param direction - 1 or -1, forward or backward
-   * @param distance - px distance.
-   */
-  this.unwheel = function(direction, distance, unit_width){
-    var x_one = unit_width * Math.cos(this.theta);
-    var y_one = unit_width * Math.sin(this.theta);
-    var theta_one = -1*distance/unit_width;
-    var theta_two = -1*this.theta - theta_one;
-    var x_two = unit_width * Math.cos(this.theta);
-    var y_two = unit_width * Math.sin(this.theta);
-    var x_final = x_two - unit_width;
-    var y_final = y_two;
-    var theta_final = -1*theta_two;
-    return {
-      theta: theta_final,
-      x: x_final,
-      y: y_final
-    };
-    // var ret = {};
-    // var unit_width = this.files * this.base.width;
-    // // Figure out where the first reference x,y will be.
-    // ret.one_x = this.x + (unit_width * Math.cos(this.theta));
-    // ret.one_y = this.y + (unit_width * Math.sin(this.theta));
-    // // Figure out what the difference of the angle is, to figure out how far back we need to go.
-    // ret.two_theta = (-1*this.theta) - (direction*distance/unit_width);
-    // // The position of the unit after it's been unwheeled
-    // ret.three_x = ret.one_x + Math.cos(ret.two_theta);
-    // ret.three_y = ret.one_y - Math.sin(ret.two_theta);
-    // // The final position of the unit, prewheel
-    // ret.four_x = ret.three_x - unit_width;
-    // ret.four_y = ret.three_y;
-  };
 
   /**
    * move - move the unit in a straight line.
@@ -230,10 +176,7 @@ function Unit(config, paper) {
     new_config.x += x_direction * x_offset;
     new_config.y += y_offset;
     this.draw(new_config);
-    // TODO: Is there a better way to do this? Need
-    // to force a reevaluation of the unit's current
-    // theta.
-    this.wheel(0);
+    return this;
   };
 
   /**
@@ -265,15 +208,17 @@ function Unit(config, paper) {
   };
 
   this.get_config = function() {
-    return {
+    var config = {
       files: this.files,
       model_count: this.model_count,
       base: this.base,
       x: this.x,
       y: this.y,
       fill_color: this.fill_color,
-      theta: this.theta
+      theta: this.theta,
+      wheel_direction: this.wheel_direction
     };
+    return config;
   };
   this.init(config, paper);
 }
