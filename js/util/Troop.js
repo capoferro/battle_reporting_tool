@@ -12,10 +12,14 @@ function Troop(config, paper) {
   this.x = config.x;
   this.y = config.y;
   this.fill_color = config.fill_color;
-  this.base = paper.rect(this.x,
-			 this.y,
-			 config.base.width-1,
-			 config.base.height-1);
+  if (paper !== undefined) {
+    this.base = paper.rect(this.x,
+			   this.y,
+			   config.base.width-1,
+			   config.base.height-1);
+  } else {
+    throw new Error('paper is undefined');
+  }
   this.base.attr({stroke: 'black',
 		  fill: this.fill_color});
 }

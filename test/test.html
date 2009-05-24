@@ -4,6 +4,8 @@
   <head>
     <title>Skirmisher Unit Tests</title>
     <script language="JavaScript" src="jsunit/app/jsUnitCore.js"></script>
+
+    <script language="JavaScript" src="../raphael.js"></script>
     <script language="JavaScript" src="../js/util/skirmisher_test.js"></script>
     <script language="JavaScript" src="../js/util/Convert.js"></script>
     <script language="JavaScript" src="../js/util/Unit.js"></script>
@@ -13,6 +15,10 @@
     <script language="JavaScript" src="../js/util/helper.js"></script>
     <script language="JavaScript" src="../js/util/init.js"></script>
     <script language="JavaScript">
+      function setUp(){
+
+      }
+      /* Convert */
       function testConvertInches(){
       assertEquals("Should use this formula: inches*10; 1 * 10 = ", 10, Convert.inch(1));
       assertEquals("Should use this formula: inches*10; -1 * 10 = ", -10, Convert.inch(-1));
@@ -39,7 +45,24 @@
       assertEquals("Should use this formula: radians*180/Math.PI; 0 * 180 / Math.PI = ", 0, Convert.degrees(0));
       assertTrue("Should use this formula: radians*180/Math.PI; 999 * 180 / Math.PI > 57238.483 ", (Convert.degrees(999) > 57238.483));
       assertTrue("Should use this formula: radians*180/Math.PI; 999 * 180 / Math.PI < 57238.484 ", (Convert.degrees(999) < 57238.484));
-      } 
+      }
+      /* Unit.js */
+      function testUnitUnwheel(){
+      inform('TestCreateUnit');
+      var test_unit = new Unit({
+  			  files: 5,
+  			  model_count: 5,
+  			  base: {
+			  width: 10,
+			  height: 10
+			  },
+  			  x: 100,
+  			  y: 300
+  			}, undefined);
+      inform('X value of the first troop ', 'test');
+      assertEquals("Test node x is not set properly", 100, test_unit.troop_set[0][0].base.node.x);
+      assertEquals("Test node y is not set properly", 300, test_unit.troop_set[0][0].base.node.y);
+      }
     </script>
   </head>
   <body>

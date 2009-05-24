@@ -43,7 +43,11 @@ function Unit(config, paper) {
     /**
      * paper.set() of troops
      */
-    this.troop_set = this.paper.set();
+    if (paper !== undefined) {
+      this.troop_set = this.paper.set();
+    } else {
+      throw new Error('paper is undefined');
+    }
 
     /**
      * Number of models deep
@@ -75,7 +79,7 @@ function Unit(config, paper) {
 				  y: this.y+(this.base.height*current_row),
 				  base: this.base,
 				  fill_color: config.fill_color
-				}, this.paper);
+				}, paper);
 
       // TODO: Make a "createDelegate" function, if I
       // end up doing this too many times:
@@ -129,30 +133,33 @@ function Unit(config, paper) {
 
     // The variable names are referencing a diagram I have drawn out.
     if ( (left && this.theta > 0) || (!left && this.theta < 0) ){
-      // Figure out where the first reference x,y will be.
-      var one_x = this.x + (unit_width * Math.cos(this.theta));
-      var one_y = this.y + (unit_width * Math.sin(this.theta));
-      var one = this.paper.rect(one_x, one_y, 5, 5);
-      one.attr('fill', 'white');
-      tmp('one_x_y');
-      // Figure out what the difference of the angle is, to figure out how far back we need to go.
-      var two_theta = (this.theta - sub_theta);
-      // The position of the unit after it's been unwheeled
-      var three_x = one_x + Math.cos(two_theta);
-      var three_y = one_y - Math.sin(two_theta);
-      var two = this.paper.rect(three_x, three_y, 5, 5);
-      two.attr('fill', 'gray');
-      tmp('three_x_y: ' + Math.cos(two_theta)+','+Math.sin(two_theta) );
-      // The final position of the unit, prewheel
-      var four_x = three_x - unit_width;
-      var four_y = three_y;
-      var three = this.paper.rect(four_x, four_y, 5, 5);
-      three.attr('fill', 'black');
-      tmp('four_x_y');
-      new_config.x = four_x;
-      new_config.y = four_y;
+      var x_one = unit_width * Math.cos(this.theta);
+      var y_one = unit_width * Math.sin(this.theta);
+      var theta_one = -1*arc_length/unit_width;
+      var theta_two = -1*this.theta - theta_one;
+      var x_two = x_one + direction*unit_width * Math.cos(this.theta);
+      var y_two = y_one + direction*unit_width * Math.sin(this.theta);
+      //
+      var xx = this.x;
+      var yy = this.y;
+      var test = this.get_config();
+      test.x = x_two + xx;
+      test.y = y_two + yy;
+      test.theta = 0;
+      this.draw(test);
+      this.x = xx;
+      this.y = yy;
+//
+      var x_final = x_two - unit_width + this.x;
+      var y_final = y_two + this.y;
+      tmp('final: ' + x_final + ',' + y_final);
+      var theta_final = -1*theta_two;
+      var unwheeled = this.unwheel(direction, arc_length, unit_width);
+
+      new_config.x = x_final;
+      new_config.y = y_final;
       // Set the wheel for the redraw.
-      new_config.theta = two_theta;
+      new_config.theta = theta_final;
     }
     this.draw(new_config);
 
@@ -167,6 +174,41 @@ function Unit(config, paper) {
     tmp('THETA: ' + this.theta);
     this.troop_set.rotate(Convert.degrees(this.theta), rotation_center_x, rotation_center_y);
 
+  };
+
+  /**
+   * Used when unit is already wheeled and needs to wheel back the other way
+   * @param direction - 1 or -1, forward or backward
+   * @param distance - px distance.
+   */
+  this.unwheel = function(direction, distance, unit_width){
+    var x_one = unit_width * Math.cos(this.theta);
+    var y_one = unit_width * Math.sin(this.theta);
+    var theta_one = -1*distance/unit_width;
+    var theta_two = -1*this.theta - theta_one;
+    var x_two = unit_width * Math.cos(this.theta);
+    var y_two = unit_width * Math.sin(this.theta);
+    var x_final = x_two - unit_width;
+    var y_final = y_two;
+    var theta_final = -1*theta_two;
+    return {
+      theta: theta_final,
+      x: x_final,
+      y: y_final
+    };
+    // var ret = {};
+    // var unit_width = this.files * this.base.width;
+    // // Figure out where the first reference x,y will be.
+    // ret.one_x = this.x + (unit_width * Math.cos(this.theta));
+    // ret.one_y = this.y + (unit_width * Math.sin(this.theta));
+    // // Figure out what the difference of the angle is, to figure out how far back we need to go.
+    // ret.two_theta = (-1*this.theta) - (direction*distance/unit_width);
+    // // The position of the unit after it's been unwheeled
+    // ret.three_x = ret.one_x + Math.cos(ret.two_theta);
+    // ret.three_y = ret.one_y - Math.sin(ret.two_theta);
+    // // The final position of the unit, prewheel
+    // ret.four_x = ret.three_x - unit_width;
+    // ret.four_y = ret.three_y;
   };
 
   /**

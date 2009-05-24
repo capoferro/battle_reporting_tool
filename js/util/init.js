@@ -25,6 +25,6 @@ window.onload = function(){
    }
 
   // TODO: Remove
-  scratch(paper);
+   scratch(paper);
 
 };
