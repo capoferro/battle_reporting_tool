@@ -26,7 +26,9 @@ function Unit(config, paper) {
    * @param config {hash} - see {@link Unit}
    */
   this.draw = function(config){
-
+    if (this.troop_set !== undefined){
+      this.troop_set.remove();
+    }
     if (config.files === undefined)      {throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.files');} else {this.files = config.files;};
     if (config.model_count === undefined){throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.model_count');} else {this.model_count = config.model_count;}
     if (config.base === undefined)       {throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.base');} else {this.base = config.base;}
@@ -34,9 +36,20 @@ function Unit(config, paper) {
     this.y =          (config.y === undefined)?          0      : config.y;
     this.theta =      (config.theta === undefined)?      0      : config.theta;
     this.fill_color = (config.fill_color === undefined)? '#fff' : config.fill_color;
-    this.selected =   (config.selected === undefined)?   false  : true;
     this.wheel_direction = (config.wheel_direction === undefined)? /* default to left */ Constants.LEFT : this.wheel_direction = config.wheel_direction;
     this.unit_width = this.files * this.base.width;
+    if (config.selected){
+      this.selected = false;
+      this.select();
+    }
+
+    // Don't allow theta to get ungodly and uneccessarily large.
+    while (this.theta > 2*Math.PI){
+      this.theta -= 2*Math.PI;
+      }
+    while (this.theta < -2*Math.PI){
+      this.theta += 2*Math.PI;
+    }
     // The following need to be reset every time there is a redraw.
     /**
      * paper.set() of troops
@@ -138,6 +151,9 @@ function Unit(config, paper) {
       //
       // Super Wheeling Action
       //
+      // TODO: Figure out why wheeling right breaks
+      //       move.  See map.html for horrible hack.
+      //
       // If we are wheeling the opposite way than the
       // unit wheeled last time, then we need to do
       // some unusual calculations.  (Wish I could
@@ -187,11 +203,10 @@ function Unit(config, paper) {
   /**
    * move - move the unit in a straight line.
    * @param inches {float} - Move distance
-   * @param forward {boolean} - If true, go
-   * forward. If false, go backward.
+   * @param direction {integer} - refer to {@link Constants}
    */
-  this.move = function(inches, forward) {
-    var distance = forward * Convert.inch(inches);
+  this.move = function(inches, direction) {
+    var distance = direction * Convert.inch(inches);
     var x_offset = distance * Math.sin(this.theta);
     var y_offset = distance * Math.cos(this.theta);
     tmp('moving (x,y): ('+x_offset+','+y_offset+')');
@@ -210,8 +225,12 @@ function Unit(config, paper) {
       this.unselect();
     } else {
       this.selected = true;
-      this.troop_set.attr({stroke: '#949',
+      this.troop_set.attr({stroke: '#ccc',
                            'stroke-width': 2});
+      if (Globals.selected !== undefined) {
+	Globals.selected.unselect();
+      }
+      Globals.selected = this;
     }
   };
 
@@ -219,11 +238,9 @@ function Unit(config, paper) {
    * unselect - removes this from the active selection
    */
   this.unselect = function() {
-    if (this.selected) {
       this.selected = false;
       this.troop_set.attr({stroke: '#000',
                            'stroke-width': 1});
-    }
   };
 
   this.show_controls = function() {
@@ -239,9 +256,17 @@ function Unit(config, paper) {
       y: this.y,
       fill_color: this.fill_color,
       theta: this.theta,
-      wheel_direction: this.wheel_direction
+      wheel_direction: this.wheel_direction,
+      selected: this.selected
     };
     return config;
   };
+
+  this.describe = function(){
+    tmp('Theta: ' + this.theta);
+    tmp('Last Wheel: ' + this.wheel_direction);
+    tmp('(x,y): ' + this.x + ', ' + this.y);
+  };
+
   this.init(config, paper);
 }

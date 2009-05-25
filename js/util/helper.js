@@ -11,12 +11,28 @@ function inspect(obj){
 }
 
 function tmp(str){
-  var txt = document.createTextNode(str);
-  var br = document.createElement('br');
-  document.getElementById('tmp').appendChild(txt);
-  document.getElementById('tmp').appendChild(br);
-}
+  var tmp = $('#out');
+  tmp.html(str);
 
+}
+function tmp2(str){
+  $('#out').html(str);
+}
+jQuery(document).ready(function(){
+			 $().mousemove(function(e){
+					 Globals.mouse.x = e.pageX - Globals.paper.$.position().left;
+					 Globals.mouse.y = e.pageY - Globals.paper.$.position().top;
+				       });
+		       });
+
+var Globals = {
+  field: undefined,
+  selected: undefined,
+  mouse: {
+    x: 0,
+    y: 0
+  }
+};
 var Constants = {
   LEFT: -1,
   UP: -1,

@@ -2,12 +2,31 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
-    <script src="raphael.js"></script>
     <title>Skirmisher.net</title>
     <script src="skirmisher.js"></script>
+    <script language="javascript">
+    </script>
   </head>
   <body>
      <div id="tmp" style="position: absolute; top: 10px; left: 800px;">
+       <h2>Movement</h2>
+       <input id="dist" type="text" style="width: 20px" value="3" /> inches<br />
+       <a href="#" onclick="local.wheel(Constants.LEFT); return false;">&lt;</a>
+       <a href="#" onclick="local.move(Constants.FORWARD); return false;">^</a>
+       <a href="#" onclick="local.move(Constants.BACKWARD); return false;">v</a>
+       <a href="#" onclick="local.wheel(Constants.RIGHT); return false;">&gt;</a><br /><br />
+       <h2>Create Unit</h2>
+       <table><tr><td># of models</td><td> <input id="models" type="text" style="width: 20px" value="15" /></td></tr>
+       <tr><td>Frontage</td><td> <input id="files" type="text" style="width: 20px" value="5" /></td></tr>
+       <tr><td>Fill Color</td><td> <input id="fill" type="text" style="width: 70px" value="blue" /></td></tr></table>
+       <a href="#" onclick="create_unit('20mm'); return false;">20mm</a>
+       <a href="#" onclick="create_unit('25mm'); return false;">25mm</a>
+       <a href="#" onclick="create_unit('40mm'); return false;">40mm</a>
+       <a href="#" onclick="create_unit('50mm'); return false;">50mm</a>
+       <a href="#" onclick="create_unit('Cavalry'); return false;">Cavalry</a>
+       <a href="#" onclick="create_unit('Chariot'); return false;">Chariot</a>
+       <div id="out">
+</div>
      </div>
   </body>
 </html>
