@@ -49,12 +49,12 @@ var local = {
       throw new Error('No base specified');
     }
     Globals.queued_unit = {
-      files: $('files').val(),
+      files: $('#files').val(),
       model_count: $('#models').val(),
       base: base,
       x: 0,
       y: 0,
-      fill_color: 'purple'
+      fill_color: '#' + $('#color').val()
     };
     }
 };

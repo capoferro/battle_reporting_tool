@@ -2,13 +2,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
+    <link rel="stylesheet" href="js/lib/color_picker/css/colorpicker.css" type="text/css" />
+    <link rel="stylesheet" media="screen" type="text/css" href="js/lib/color_picker/css/layout.css" />
+    <style>
+      h2{font-size: 20pt; padding: 20px 0px}
+    </style>
     <title>Skirmisher.net</title>
     <script src="skirmisher.js"></script>
+
+
+    <script type="text/javascript" src="js/lib/color_picker/js/colorpicker.js"></script>
+    <script type="text/javascript" src="js/lib/color_picker/js/eye.js"></script>
+    <script type="text/javascript" src="js/lib/color_picker/js/utils.js"></script>
+    <script type="text/javascript" src="js/lib/color_picker/js/layout.js"></script>
+
     <script language="javascript">
+$(document).ready(function(){
+$('#fill').ColorPicker({
+	onSubmit: function(hsb, hex, rgb, el) {
+		$(el).val(hex);
+		$(el).ColorPickerHide();
+	},
+	onBeforeShow: function () {
+		$(this).ColorPickerSetColor(this.value);
+	}
+})
+.bind('keyup', function(){
+	$(this).ColorPickerSetColor(this.value);
+});
+});
+
     </script>
   </head>
   <body>
-     <div id="tmp" style="position: absolute; top: 10px; left: 800px;">
+     <div id="tmp" style="position: absolute; top: 100px; left: 800px; text-align: left">
        <h2>Movement</h2>
        <input id="dist" type="text" style="width: 20px" value="3" /> inches<br />
        <a href="#" onclick="local.wheel(Constants.LEFT); return false;">&lt;</a>
@@ -18,15 +45,15 @@
        <h2>Create Unit</h2>
        <table><tr><td># of models</td><td> <input id="models" type="text" style="width: 20px" value="15" /></td></tr>
        <tr><td>Frontage</td><td> <input id="files" type="text" style="width: 20px" value="5" /></td></tr>
-       <tr><td>Fill Color</td><td> <input id="fill" type="text" style="width: 70px" value="blue" /></td></tr></table>
+       <tr><td>Fill Color</td><td> <input id="fill" type="text" style="width: 70px" value="#ffcc00" /></td></tr></table>
        <a href="#" onclick="create_unit('20mm'); return false;">20mm</a>
        <a href="#" onclick="create_unit('25mm'); return false;">25mm</a>
        <a href="#" onclick="create_unit('40mm'); return false;">40mm</a>
        <a href="#" onclick="create_unit('50mm'); return false;">50mm</a>
        <a href="#" onclick="create_unit('Cavalry'); return false;">Cavalry</a>
        <a href="#" onclick="create_unit('Chariot'); return false;">Chariot</a>
-       <div id="out">
-</div>
+       <div id="out" style="padding: 10px; border: solid #ccc 1px;">
+       </div>
      </div>
   </body>
 </html>

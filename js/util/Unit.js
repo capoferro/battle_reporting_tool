@@ -8,16 +8,14 @@
  * @cfg x {int} - x coordinate
  * @cfg y {int} - y coordinate
  * @cfg fill_color {string} - fill color
- * @param paper {Raphael} - rendering target
  */
-function Unit(config, paper) {
+function Unit(config) {
   /**
    * Constructor
    * @param config {hash} - see {@link Unit}
    * @param paper {Raphael} - rendering target
    */
-  this.init = function(config, paper) {
-    this.paper = paper;
+  this.init = function(config) {
     this.draw(config);
   };
 
@@ -26,6 +24,9 @@ function Unit(config, paper) {
    * @param config {hash} - see {@link Unit}
    */
   this.draw = function(config){
+    if (config === undefined){
+      config = this.get_config();
+    }
     if (this.troop_set !== undefined){
       this.troop_set.remove();
     }
@@ -35,13 +36,10 @@ function Unit(config, paper) {
     this.x =          (config.x === undefined)?          0      : config.x;
     this.y =          (config.y === undefined)?          0      : config.y;
     this.theta =      (config.theta === undefined)?      0      : config.theta;
-    this.fill_color = (config.fill_color === undefined)? '#fff' : config.fill_color;
+    this.fill_color = (config.fill_color === undefined)? 'transparent' : config.fill_color;
     this.wheel_direction = (config.wheel_direction === undefined)? /* default to left */ Constants.LEFT : this.wheel_direction = config.wheel_direction;
     this.unit_width = this.files * this.base.width;
-    if (config.selected){
-      this.selected = false;
-      this.select();
-    }
+    this.selected = config.selected;
 
     // Don't allow theta to get ungodly and uneccessarily large.
     while (this.theta > 2*Math.PI){
@@ -54,8 +52,8 @@ function Unit(config, paper) {
     /**
      * paper.set() of troops
      */
-    if (paper !== undefined) {
-      this.troop_set = this.paper.set();
+    if (Globals.paper !== undefined) {
+      this.troop_set = Globals.paper.set();
     } else {
       throw new Error('paper is undefined');
     }
@@ -84,13 +82,21 @@ function Unit(config, paper) {
     var current_col = 0;
     var current_troop = undefined;
     var counter = 0;
+    var current_color = '#fff';
+    var color_mod = 1;
+    if (this.selected){
+      color_mod += 2;
+    }
     while (counter < this.model_count) {
       current_troop = new Troop({
                                   x: this.x+(this.base.width*current_col),
                                   y: this.y+(this.base.height*current_row),
                                   base: this.base,
-                                  fill_color: config.fill_color
-                                }, paper);
+                                  fill_color: (current_row === 0)?scale_color(config.fill_color, color_mod+2):scale_color(config.fill_color, color_mod),
+				  selected: this.selected
+                                });
+
+
 
       // TODO: Make a "createDelegate" function, if I
       // end up doing this too many times:
@@ -221,26 +227,26 @@ function Unit(config, paper) {
    * select - makes this unit the active selection
    */
   this.select = function() {
-    if (this.selected) {
-      this.unselect();
-    } else {
-      this.selected = true;
-      this.troop_set.attr({stroke: '#ccc',
-                           'stroke-width': 2});
-      if (Globals.selected !== undefined) {
-	Globals.selected.unselect();
-      }
-      Globals.selected = this;
+    if (this.selected){
+      return this.unselect();
     }
+    // Unselect whatever has been selected
+    if (Globals.selected !== undefined) {
+      Globals.selected.unselect();
+    }
+    Globals.selected = this;
+    this.selected = true;
+    this.draw();
+    return this;
   };
 
   /**
    * unselect - removes this from the active selection
    */
   this.unselect = function() {
-      this.selected = false;
-      this.troop_set.attr({stroke: '#000',
-                           'stroke-width': 1});
+    this.selected = false;
+    this.draw();
+    return this;
   };
 
   this.show_controls = function() {
@@ -268,5 +274,5 @@ function Unit(config, paper) {
     tmp('(x,y): ' + this.x + ', ' + this.y);
   };
 
-  this.init(config, paper);
+  this.init(config);
 }
