@@ -30,16 +30,20 @@ function Unit(config) {
     if (this.troop_set !== undefined){
       this.troop_set.remove();
     }
-    if (config.files === undefined)      {throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.files');} else {this.files = config.files;};
-    if (config.model_count === undefined){throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.model_count');} else {this.model_count = config.model_count;}
-    if (config.base === undefined)       {throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.base');} else {this.base = config.base;}
+    if (config.files === undefined){
+      throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.files');} else {this.files = config.files;};
+    if (config.model_count === undefined){
+      throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.model_count');} else {this.model_count = config.model_count;}
+    if (config.base === undefined){
+      throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.base');} else {this.base = config.base;}
     this.x =          (config.x === undefined)?          0      : config.x;
     this.y =          (config.y === undefined)?          0      : config.y;
     this.theta =      (config.theta === undefined)?      0      : config.theta;
+    this.selected =   (config.selected === undefined)?   false  : config.selected;
     this.fill_color = (config.fill_color === undefined)? 'transparent' : config.fill_color;
-    this.wheel_direction = (config.wheel_direction === undefined)? /* default to left */ Constants.LEFT : this.wheel_direction = config.wheel_direction;
+    this.wheel_direction = (config.wheel_direction === undefined)? Constants.LEFT : this.wheel_direction = config.wheel_direction;
     this.unit_width = this.files * this.base.width;
-    this.selected = config.selected;
+    this.skirmishing = (config.skirmishing === undefined)? false : config.skirmishing;
 
     // Don't allow theta to get ungodly and uneccessarily large.
     while (this.theta > 2*Math.PI){
@@ -87,7 +91,14 @@ function Unit(config) {
     if (this.selected){
       color_mod += 2;
     }
+    var x_mod = 0;
+    var y_mod = 0;
     while (counter < this.model_count) {
+      tmp(counter);
+      // if (this.skirmishing){
+      // 	x_mod = Math.random()*10 + this.base.width;
+      // 	y_mod = Math.random()*10 + counter*this.base.width;
+      // }
       current_troop = new Troop({
                                   x: this.x+(this.base.width*current_col),
                                   y: this.y+(this.base.height*current_row),
@@ -263,7 +274,8 @@ function Unit(config) {
       fill_color: this.fill_color,
       theta: this.theta,
       wheel_direction: this.wheel_direction,
-      selected: this.selected
+      selected: this.selected,
+      skirmishing: this.skirmishing
     };
     return config;
   };

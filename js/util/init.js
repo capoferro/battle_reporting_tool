@@ -1,4 +1,4 @@
-window.onload = function(){
+$(window).ready(function(){
   /**
    * The rendering target.
    */
@@ -40,4 +40,4 @@ window.onload = function(){
    }
 
 
-};
+});
