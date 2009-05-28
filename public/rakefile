@@ -1,0 +1,15 @@
+task :jslint do
+  script = ''
+  Dir["**/*.js"].each do |file|
+    script += File.new(file, 'r').readlines.join("")
+  end
+  out_file = File.new('out.js', 'w')
+  out_file.puts(script)
+  sh "/home/josiah/jsl/jsl.py out.js"
+end
+
+task :clean do
+  if File.exists? 'out.js'
+    File.delete('out.js')
+  end
+end

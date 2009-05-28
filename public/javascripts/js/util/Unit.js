@@ -96,12 +96,13 @@ function Unit(config) {
     while (counter < this.model_count) {
       tmp(counter);
       // if (this.skirmishing){
-      // 	x_mod = Math.random()*10 + this.base.width;
-      // 	y_mod = Math.random()*10 + counter*this.base.width;
+      x_mod = (current_col - this.files/2)*this.files+((current_row%2)*this.base.width);
+      y_mod = (current_row - this.ranks/2)*this.ranks;
+
       // }
       current_troop = new Troop({
-                                  x: this.x+(this.base.width*current_col),
-                                  y: this.y+(this.base.height*current_row),
+                                  x: this.x+(this.base.width*current_col) + x_mod,
+                                  y: this.y+(this.base.height*current_row) + y_mod,
                                   base: this.base,
                                   fill_color: (current_row === 0)?scale_color(config.fill_color, color_mod+2):scale_color(config.fill_color, color_mod),
 				  selected: this.selected
