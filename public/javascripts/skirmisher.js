@@ -1,15 +1,18 @@
-function include(path){
+function css(path){
+  document.write('<link rel="stylesheet" type="text/css" href="'+path+'" />');
+}
+function js(path){
   document.write('<script src="'+path+'" type="text/javascript"></script>');
 }
 
-include('js/lib/raphael.js');
-include('js/lib/jquery.js');
-include('js/util/helper.js');
-include('js/util/Convert.js');
-include('js/util/Ruler.js');
-include('js/util/Unit.js');
-include('js/util/Troop.js');
-include('js/util/Base.js');
-include('js/util/Field.js');
-include('scratch.js');
-include('js/util/init.js');
+  js('/javascripts/lib/raphael.js');
+  js('/javascripts/lib/jquery.js');
+  js('/javascripts/lib/colorpicker.js');
+  js('/javascripts/util/helper.js');
+  js('/javascripts/util/Ruler.js');
+  js('/javascripts/util/Unit.js');
+  js('/javascripts/util/Troop.js');
+  js('/javascripts/util/Base.js');
+  js('/javascripts/util/Field.js');
+  js('/javascripts/scratch.js');
+  js('/javascripts/util/init.js');

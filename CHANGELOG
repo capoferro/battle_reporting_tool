@@ -4,3 +4,5 @@ v0.2
 - Tagged for wheel rewrite.
 v0.2.1
 - Wheel rewrite completed, move also adjusted to match.
+v0.3
+- Added rails.
