@@ -55,12 +55,10 @@ var Field = function(config) {
       Globals.mode = Constants.mode.DEFAULT;
       break;
     case Constants.mode.RULER:
-      alert('Exiting ruler mode');
       Ruler.toggle(false);
       Globals.mode = Constants.mode.DEFAULT;
       break;
     default:
-      alert('Entering ruler mode. Cur mode: ' + Globals.mode);
       Ruler.toggle(true);
       Globals.mode = Constants.mode.RULER;
     }
@@ -74,9 +72,9 @@ var Field = function(config) {
   // this.field.node.onload = function(){};
   // this.field.node.onmousedown = function(){};
   this.field.node.onmousemove = function(){
+  // This should always be the same as the Ruler onmove.
     switch(Globals.mode){
     case Constants.mode.RULER:
-      tmp('hallo');
       Ruler.draw();
       break;
     default:
