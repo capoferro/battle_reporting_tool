@@ -13,7 +13,7 @@ var Constants = {
   mode: {
     DEFAULT: 'DEFAULT',
     RULER: 'RULER',
-    NEW_UNIT: 'NEW_UNIT',
+    CREATE_UNIT: 'CREATE_UNIT',
     UNIT_SELECTED: 'UNIT_SELECTED',
     UNIT_PIVOT: 'UNIT_PIVOT'
   },
@@ -45,6 +45,10 @@ var Globals = {
   mode: Constants.mode.DEFAULT
 };
 
+function set_mode(mode){
+  $('#mode').html(mode);
+  Globals.mode = mode;
+}
 /**
  * Covert offers helper functions for translating various
  * real world measurements into Skirmisher standard measurements.

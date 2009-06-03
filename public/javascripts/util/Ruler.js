@@ -82,7 +82,7 @@ var Ruler = {
       case Constants.mode.RULER:
       default:
 	Ruler.toggle(false);
-	Globals.mode = Constants.mode.DEFAULT;
+	set_mode(Constants.mode.DEFAULT);
       }
     };
     // this.ruler.node.ondblclick = function(){};

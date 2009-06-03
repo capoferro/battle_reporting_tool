@@ -46,21 +46,21 @@ var Field = function(config) {
   // this.field.node.onchange = function(){};
   this.field.node.onclick = function(){
     switch (Globals.mode) {
-    case Constants.mode.NEW_UNIT:
+    case Constants.mode.CREATE_UNIT:
       Globals.queued_unit.x = Globals.mouse.x;
       Globals.queued_unit.y = Globals.mouse.y;
       var last_unit = new Unit(Globals.queued_unit);
       Globals.queued_unit = undefined;
       Globals.selected = last_unit;
-      Globals.mode = Constants.mode.DEFAULT;
+      set_mode(Constants.mode.DEFAULT);
       break;
     case Constants.mode.RULER:
       Ruler.toggle(false);
-      Globals.mode = Constants.mode.DEFAULT;
+      set_mode(Constants.mode.DEFAULT);
       break;
     default:
       Ruler.toggle(true);
-      Globals.mode = Constants.mode.RULER;
+      set_mode(Constants.mode.RULER);
     }
   };
   // this.field.node.ondblclick = function(){};

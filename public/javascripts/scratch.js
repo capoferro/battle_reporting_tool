@@ -23,40 +23,7 @@ var local = {
     Globals.selected.move(document.getElementById('dist').value, direction);
 
     Globals.selected.describe();
-  },
-  create_unit: function(base_size){
-    var base;
-    switch (base_size){
-    case '20mm':
-      base = base_20mm;
-      break;
-    case '25mm':
-      base = base_25mm;
-      break;
-    case '40mm':
-      base = base_40mm;
-      break;
-    case '50mm':
-      base = base_50mm;
-      break;
-    case 'Chariot':
-      base = base_Chariot;
-      break;
-    case 'Cavalry':
-      base = base_Cavalry;
-      break;
-    default:
-      throw new Error('No base specified');
-    }
-    Globals.queued_unit = {
-      files: $('#files').val(),
-      model_count: $('#models').val(),
-      base: base,
-      x: 0,
-      y: 0,
-      fill_color: '#' + $('#color').val()
-    };
-    }
+  }
 };
 
 function create_unit(base_size){
@@ -104,4 +71,5 @@ function create_unit(base_size){
       y: 0,
       fill_color: fill
     };
+  set_mode(Constants.mode.CREATE_UNIT);
 }
