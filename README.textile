@@ -10,20 +10,20 @@ Feel free to go to "skirmisher.net":http://skirmisher.net to leave ideas for fut
 
 h3. Current release in progress: [Prototype (v0.3)]
 
-h3. Roadmap
+h2. Roadmap
 
-h4. Current version deployed @ "skirmisher.net"http://skirmisher.net/map.html: v0.2.1
+h4. Current version deployed @ "skirmisher.net":http://skirmisher.net/map.html: v0.2.1
 
 -- Note: the further down the list, the more speculative this list gets. :)
 
-h5. v0.3
+h4. v0.3
 
 * Modal event handlers
 * Skirmishing units
 * Monsters
 * Chariots
 
-h5. v0.4
+h4. v0.4
 
 * UI
 ** Unit controls
@@ -32,7 +32,7 @@ h5. v0.4
 *** Drag to pivot
 ** Unit builder
 
-h5. v0.5
+h4. v0.5
 
 * Blast templates
 ** Large
@@ -45,7 +45,7 @@ h5. v0.5
 ** Movement Max
 ** more?
 
-h5. v0.6
+h4. v0.6
 
 * Dice roller
 ** xD6 rolls
@@ -56,7 +56,7 @@ h5. v0.6
 ** Undo
 ** Redo
 
-h5. v0.7
+h4. v0.7
 
 * Charge alignment
 * Field grids
@@ -65,7 +65,7 @@ h5. v0.7
 * Import game history
 * Import army config
 
-h5. v0.8
+h4. v0.8
 
 * Game management
 ** Save [pastie style?]
@@ -73,7 +73,7 @@ h5. v0.8
 * Database Schema
 * Terrain
 
-h5. v0.9
+h4. v0.9
 
 * Log in
 * User profiles
