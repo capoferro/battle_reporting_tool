@@ -1,4 +1,4 @@
-h1(#darkgreen). Skirmsher
+h1. Skirmsher
 
 This is a battle reporting tool.  At least it's the start of one.  If you want to try it out, download the source, then:
 
@@ -8,7 +8,7 @@ This is a battle reporting tool.  At least it's the start of one.  If you want t
 
 Feel free to go to "skirmisher.net":http://skirmisher.net to leave ideas for future development via the Suggestions link.
 
-h1(). Current release in progress:
+h1. Current release in progress:
 
-h2(#blue). Prototype.
+p. Prototype.
 
