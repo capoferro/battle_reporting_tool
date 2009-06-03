@@ -8,7 +8,78 @@ This is a battle reporting tool.  At least it's the start of one.  If you want t
 
 Feel free to go to "skirmisher.net":http://skirmisher.net to leave ideas for future development via the Suggestions link.
 
-h1. Current release in progress:
+h3. Current release in progress: [Prototype (v0.3)]
 
-p. Prototype.
+h3. Roadmap
+
+h4. Current version deployed @ "skirmisher.net"http://skirmisher.net/map.html: v0.2.1
+
+-- Note: the further down the list, the more speculative this list gets. :)
+
+h5. v0.3
+
+* Modal event handlers
+* Skirmishing units
+* Monsters
+* Chariots
+
+h5. v0.4
+
+* UI
+** Unit controls
+*** Drag to wheel
+*** Drag to move
+*** Drag to pivot
+** Unit builder
+
+h5. v0.5
+
+* Blast templates
+** Large
+** Small
+** Flame
+* Line of sight
+* Unit information bubble
+* Unit attributes
+** Large Target
+** Movement Max
+** more?
+
+h5. v0.6
+
+* Dice roller
+** xD6 rolls
+** Scatter
+** Artillary
+** Dice log
+* Game history
+** Undo
+** Redo
+
+h5. v0.7
+
+* Charge alignment
+* Field grids
+** Deployment zones
+** Table quarters
+* Import game history
+* Import army config
+
+h5. v0.8
+
+* Game management
+** Save [pastie style?]
+** Restore
+* Database Schema
+* Terrain
+
+h5. v0.9
+
+* Log in
+* User profiles
+** Game history
+** Basic information
+
+
+
 
