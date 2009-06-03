@@ -8,9 +8,11 @@ This is a battle reporting tool.  At least it's the start of one.  If you want t
 
 Feel free to go to "skirmisher.net":http://skirmisher.net to leave ideas for future development via the Suggestions link.
 
-h3. Current release in progress: [Prototype (v0.3)]
+
 
 h2. Roadmap
+
+h3. Release in progress: [Prototype (v0.3)]
 
 h4. Current version deployed @ "skirmisher.net":http://skirmisher.net/map.html: v0.2.1
 
