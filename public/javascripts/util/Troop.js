@@ -44,6 +44,9 @@ function Troop(config) {
 	self.parent.select();
       }
       break;
+    case Constants.mode.UNIT_PIVOT:
+      Globals.selected.pivot();
+      break;
     case Constants.mode.RULER:
       Ruler.toggle(false);
       set_mode(Constants.mode.DEFAULT);

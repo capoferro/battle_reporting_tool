@@ -77,6 +77,9 @@ var Field = function(config) {
     case Constants.mode.RULER:
       Ruler.draw();
       break;
+    case Constants.mode.UNIT_PIVOT:
+      Globals.selected.pivot();
+      break;
     default:
       break;
     }

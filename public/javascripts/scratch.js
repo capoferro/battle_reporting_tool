@@ -73,3 +73,11 @@ function create_unit(base_size){
     };
   set_mode(Constants.mode.CREATE_UNIT);
 }
+
+function pivot_mode(){
+  if (Globals.mode == Constants.mode.UNIT_PIVOT){
+    set_mode(Constants.mode.DEFAULT);
+  } else {
+    set_mode(Constants.mode.UNIT_PIVOT);
+  }
+}

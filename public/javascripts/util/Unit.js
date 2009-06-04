@@ -146,21 +146,21 @@ function Unit(config) {
     }
     this.pivot = function(){
       var unit_center = {
-	x: this.unit_width/2,
-	y: this.ranks*this.base.height/2
+	x: this.unit_width/2 + this.x,
+	y: this.ranks*this.base.height/2 + this.y
       };
       var mouse_offset = {
 	x: Globals.mouse.x - unit_center.x,
-	y: Globals.mouse.y - unit_center.y,
-	// Note: 'this' is mouse_offset, in case I'm dumb
-	//       when I read this code in future.
-	theta: atan(this.x/this.y)
+	y: -1*(Globals.mouse.y - unit_center.y)
       };
+      mouse_offset.theta = (mouse_offset.x > 0)?Math.atan(mouse_offset.y/mouse_offset.x):Math.atan2(mouse_offset.y,mouse_offset.x);
 
       var new_config = this.get_config();
-      new_config.theta = 90 - mouse_offset.theta;
+      new_config.theta = mouse_offset.theta - Math.PI/2;
+      tmp('Unit center: ('+unit_center.x+', '+unit_center.y+')'
+	 + '<br /> Mouse offset: ('+mouse_offset.x+', '+mouse_offset.y+')'
+	 + '<br /> Theta: ' + new_config.theta);
       this.draw(new_config);
-
     };
     // This conditional block is to allow this.draw()
     // to call this.wheel(0) without causing an infinite
