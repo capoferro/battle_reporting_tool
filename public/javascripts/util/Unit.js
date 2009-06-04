@@ -94,7 +94,6 @@ function Unit(config) {
     var x_mod = 0;
     var y_mod = 0;
     while (counter < this.model_count) {
-      tmp(counter);
       current_troop = new Troop({
                                   x: this.x+(this.base.width*current_col),
                                   y: this.y+(this.base.height*current_row),
@@ -259,6 +258,7 @@ function Unit(config) {
    * unselect - removes this from the active selection
    */
   this.unselect = function() {
+    Globals.selected = undefined;
     this.selected = false;
     this.draw();
     return this;
