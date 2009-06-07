@@ -20,7 +20,7 @@ h4. Current version deployed @ "skirmisher.net":http://skirmisher.net/map.html: 
 
 h4. v0.3
 
-* Modal event handlers
+* -Modal event handlers-
 * Skirmishing units
 * Monsters
 * Chariots
