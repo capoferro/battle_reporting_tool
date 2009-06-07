@@ -71,13 +71,13 @@ function create_unit(base_size){
       y: 0,
       fill_color: fill
     };
-  set_mode(Constants.mode.CREATE_UNIT);
+  Mode.push(Constants.mode.CREATE_UNIT);
 }
 
 function pivot_mode(){
-  if (Globals.mode == Constants.mode.UNIT_PIVOT){
-    set_mode(Constants.mode.DEFAULT);
+  if (Mode.peek() == Constants.mode.UNIT_PIVOT){
+    Mode.pop();
   } else {
-    set_mode(Constants.mode.UNIT_PIVOT);
+    Mode.push(Constants.mode.UNIT_PIVOT);
   }
 }

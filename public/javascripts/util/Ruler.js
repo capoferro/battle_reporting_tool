@@ -58,11 +58,13 @@ var Ruler = {
 		     'fill-opacity': .5
 		   });
     this.info_text = Globals.paper.text(box.x+20, box.y+8, (length/10).toFixed(2));
-    this.event_setup();
+    generate_event_template(this.ruler.node);
+    generate_event_template(this.info.node);
+    generate_event_template(this.info_text.node);
   },
   toggle: function(switcher){
     if (switcher !== undefined){
-      // Put it opposite, cause the next conditionals will flip it.
+      // Set it opposite, cause the next conditionals will flip it.
       this.on = (switcher)?false:true;
     }
     if (this.on){
@@ -72,45 +74,6 @@ var Ruler = {
       this.on = true;
       this.init();
     }
-  },
-  event_setup: function(){
-    // this.ruler.node.onabort = function(){};
-    // this.ruler.node.onblur = function(){};
-    // this.ruler.node.onchange = function(){};
-    this.ruler.node.onclick = function(){
-      switch (Globals.mode) {
-      case Constants.mode.RULER:
-      default:
-	Ruler.toggle(false);
-	set_mode(Constants.mode.DEFAULT);
-      }
-    };
-    // this.ruler.node.ondblclick = function(){};
-    // this.ruler.node.onerror = function(){};
-    // this.ruler.node.onfocus = function(){};
-    // this.ruler.node.onkeydown = function(){};
-    // this.ruler.node.onkeypress = function(){};
-    // this.ruler.node.onkeyup = function(){};
-    // this.ruler.node.onload = function(){};
-    // this.ruler.node.onmousedown = function(){};
-    this.ruler.node.onmousemove = function(){
-    // This should always be the same as the Field onmove.
-    switch(Globals.mode){
-    case Constants.mode.RULER:
-      Ruler.draw();
-      break;
-    default:
-      break;
-      }
-    };
-    // this.ruler.node.onmouseout = function(){};
-    // this.ruler.node.onmouseover = function(){};
-    // this.ruler.node.onmouseup = function(){};
-    // this.ruler.node.onreset = function(){};
-    // this.ruler.node.onresize = function(){};
-    // this.ruler.node.onselect = function(){};
-    // this.ruler.node.onsubmit = function(){};
-    // this.ruler.node.onunload = function(){};
   }
 };
 

@@ -29,30 +29,14 @@ function Troop(config) {
 		  'fill-opacity': (this.selected)?.75:1,
 		  'stroke-opacity': (this.selected)?.75:1,
 		  fill: this.fill_color});
-   this.base.node.onabort = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onabort();
-       }
-   };
-   this.base.node.onblur = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onblur();
-       }
-   };
-   this.base.node.onchange = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onchange();
-       }
-   };
+
+  generate_event_template(this.base.node);
   this.base.node.onclick = function(){
-    switch (Globals.mode){
+    switch (Mode.peek()){
     case Constants.mode.UNIT_SELECTED:
-      if (Globals.selected == this.parent){
+      if (Globals.selected === troop_self.parent){
 	troop_self.parent.unselect();
-	set_mode(Constants.mode.DEFAULT);
+	Mode.pop();
       } else {
 	Globals.selected.unselect();
 	troop_self.parent.select();
@@ -61,111 +45,31 @@ function Troop(config) {
     case Constants.mode.UNIT_PIVOT:
       Globals.selected.pivot();
       break;
-    case Constants.mode.RULER:
-    default:
+    case Constants.mode.DEFAULT:
       troop_self.parent.select();
-    }
-  };
-   this.base.node.ondblclick = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.ondblclick();
-       }
-   };
-   this.base.node.onerror = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onerror();
-       }
-   };
-   this.base.node.onfocus = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onfocus();
-       }
-   };
-   this.base.node.onkeydown = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onkeydown();
-       }
-   };
-   this.base.node.onkeypress = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onkeypress();
-       }
-   };
-   this.base.node.onkeyup = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onkeyup();
-       }
-   };
-   this.base.node.onload = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onload();
-       }
-   };
-   this.base.node.onmousedown = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onmousedown();
-       }
-   };
-  this.base.node.onmousemove = function(){
-    switch (Globals.mode){
+      Mode.push(Constants.mode.UNIT_SELECTED);
+      break;
     default:
-      Default_Events.onmousemove();
+      Default_Events.onclick();
     }
   };
-   this.base.node.onmouseout = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onmouseout();
-       }
-   };
-   this.base.node.onmouseover = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onmouseover();
-       }
-   };
-   this.base.node.onmouseup = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onmouseup();
-       }
-   };
-   this.base.node.onreset = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onreset();
-       }
-   };
-   this.base.node.onresize = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onresize();
-       }
-   };
-   this.base.node.onselect = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onselect();
-       }
-   };
-   this.base.node.onsubmit = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onsubmit();
-       }
-   };
-   this.base.node.onunload = function(){
-     switch (Globals.mode){
-     default:
-       Default_Events.onunload();
-       }
-   };
+  // this.base.node.onmousedown = function(){
+  //   switch (Mode.peek()){
+  //   case Constants.mode.UNIT_SELECTED:
+  //     if (this.parent == Globals.selected) {
+  // 	this.parent.teleport.init();
+  // 	Mode.push(Constants.mode.TELEPORT);
+  //     }
+  //   default:
+  //     Default_Events.onmousedown();
+  //   }
+  // };
+  // this.base.node.onmouseup = function(){
+  //   switch (Mode.peek()){
+  //   case Constants.mode.TELEPORT:
+  //     Mode.push(Constants.mode.UNIT_SELECTED);
+  //   default:
+  //     Default_Events.onmouseup();
+  //   }
+  // };
 }

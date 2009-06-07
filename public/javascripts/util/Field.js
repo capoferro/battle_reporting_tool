@@ -41,46 +41,5 @@ var Field = function(config) {
      }
    }
 
-  // this.field.node.onabort = function(){};
-  // this.field.node.onblur = function(){};
-  // this.field.node.onchange = function(){};
-  this.field.node.onclick = function(){
-    switch (Globals.mode) {
-    case Constants.mode.CREATE_UNIT:
-      Globals.queued_unit.x = Globals.mouse.x;
-      Globals.queued_unit.y = Globals.mouse.y;
-      var last_unit = new Unit(Globals.queued_unit);
-      Globals.queued_unit = undefined;
-      Globals.selected = last_unit;
-      set_mode(Constants.mode.DEFAULT);
-      break;
-    case Constants.mode.UNIT_PIVOT:
-      Globals.selected.pivot();
-      break;
-    default:
-      Default_Events.onclick();
-    }
-  };
-  // this.field.node.ondblclick = function(){};
-  // this.field.node.onerror = function(){};
-  // this.field.node.onfocus = function(){};
-  // this.field.node.onkeydown = function(){};
-  // this.field.node.onkeypress = function(){};
-  // this.field.node.onkeyup = function(){};
-  // this.field.node.onload = function(){};
-  // this.field.node.onmousedown = function(){};
-  this.field.node.onmousemove = function(){
-    switch(Globals.mode){
-    default:
-      Default_Events.onmousemove();
-    }
-  };
-  // this.field.node.onmouseout = function(){};
-  // this.field.node.onmouseover = function(){};
-  // this.field.node.onmouseup = function(){};
-  // this.field.node.onreset = function(){};
-  // this.field.node.onresize = function(){};
-  // this.field.node.onselect = function(){};
-  // this.field.node.onsubmit = function(){};
-  // this.field.node.onunload = function(){};
+  generate_event_template(this.field.node);
 };

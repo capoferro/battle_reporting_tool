@@ -9,6 +9,7 @@ function js(path){
   js('/javascripts/lib/jquery.js');
   js('/javascripts/lib/colorpicker.js');
   js('/javascripts/util/helper.js');
+  js('/javascripts/util/generate_event_template.js');
   js('/javascripts/util/Ruler.js');
   js('/javascripts/util/Unit.js');
   js('/javascripts/util/Troop.js');

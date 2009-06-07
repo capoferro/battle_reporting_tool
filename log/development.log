@@ -4006,3 +4006,105 @@ Completed in 7ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
 Processing MapController#index (for 192.168.1.199 at 2009-06-06 23:24:55) [GET]
 Rendering map/index
 Completed in 3ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing ApplicationController#index (for 192.168.1.199 at 2009-06-07 09:31:59) [GET]
+
+ActionController::RoutingError (No route matches "/" with {:method=>:get}):
+  /usr/lib/ruby/1.8/webrick/httpserver.rb:104:in `service'
+  /usr/lib/ruby/1.8/webrick/httpserver.rb:65:in `run'
+  /usr/lib/ruby/1.8/webrick/server.rb:173:in `start_thread'
+  /usr/lib/ruby/1.8/webrick/server.rb:162:in `start'
+  /usr/lib/ruby/1.8/webrick/server.rb:162:in `start_thread'
+  /usr/lib/ruby/1.8/webrick/server.rb:95:in `start'
+  /usr/lib/ruby/1.8/webrick/server.rb:92:in `each'
+  /usr/lib/ruby/1.8/webrick/server.rb:92:in `start'
+  /usr/lib/ruby/1.8/webrick/server.rb:23:in `start'
+  /usr/lib/ruby/1.8/webrick/server.rb:82:in `start'
+
+Rendering rescues/layout (not_found)
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 09:32:05) [GET]
+Rendering map/index
+Completed in 7ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 09:38:40) [GET]
+Rendering map/index
+Completed in 7ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 09:40:27) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 09:47:21) [GET]
+Rendering map/index
+Completed in 11ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 09:47:32) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 09:49:21) [GET]
+Rendering map/index
+Completed in 7ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 09:55:55) [GET]
+Rendering map/index
+Completed in 7ms (View: 2, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:01:04) [GET]
+Rendering map/index
+Completed in 8ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:02:08) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:09:23) [GET]
+Rendering map/index
+Completed in 7ms (View: 2, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:09:53) [GET]
+Rendering map/index
+Completed in 7ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:10:28) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:12:27) [GET]
+Rendering map/index
+Completed in 12ms (View: 2, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:26:23) [GET]
+Rendering map/index
+Completed in 7ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:36:40) [GET]
+Rendering map/index
+Completed in 5ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:37:41) [GET]
+Rendering map/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:39:47) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]

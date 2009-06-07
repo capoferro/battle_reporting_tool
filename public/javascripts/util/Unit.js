@@ -237,8 +237,8 @@ function Unit(config) {
     var teleport_self = this;
     this.init = function(){
       teleport_self.click_offset = {
-	x: Globals.mouse.x - this.x,
-	y: Globals.mouse.y - this.y
+	x: Globals.mouse.x - unit_self.x,
+	y: Globals.mouse.y - unit_self.y
       };
     };
     this.go = function(){
@@ -253,14 +253,14 @@ function Unit(config) {
    * select - makes this unit the active selection
    */
   this.select = function() {
-    if (this.selected){
-      return this.unselect();
+    if (unit_self.selected){
+      return unit_self.unselect();
     }
     // Unselect whatever has been selected
     if (Globals.selected !== undefined) {
       Globals.selected.unselect();
     }
-    Globals.selected = this;
+    Globals.selected = unit_self;
     this.selected = true;
     this.draw();
     return this;

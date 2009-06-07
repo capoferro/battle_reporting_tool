@@ -1,3 +1,7 @@
+var Skirmisher_Error = function(message){
+  throw new Error(message + Constants.error.DEFAULT_TRAILER);
+};
+
 /**
  * These are predefined constants. Go figure.
  * @class Constants
@@ -15,11 +19,15 @@ var Constants = {
     RULER: 'RULER',
     CREATE_UNIT: 'CREATE_UNIT',
     UNIT_SELECTED: 'UNIT_SELECTED',
-    UNIT_PIVOT: 'UNIT_PIVOT'
+    UNIT_PIVOT: 'UNIT_PIVOT',
+    TELEPORT: 'TELEPORT'
   },
   paper: {
     WIDTH: 750,
     HEIGHT: 500
+  },
+  error: {
+    DEFAULT_TRAILER: 'Please file a ticket in the issue tracker. (http://github.com/bluepojo/skirmisher/issues) Please include your operating system and browser with versions as well as steps I can use to recreate this error in order to fix it.  Thanks!'
   }
 };
 
@@ -27,45 +35,7 @@ var Constants = {
  * Default event functions for when an object does not have one explicitly defined.
  */
 
-var Default_Events = {
-  onabort: function(){},
-  onblur: function(){},
-  onchange: function(){},
-  onclick: function(){
-    switch (Globals.mode){
-    case Constants.mode.RULER:
-      Ruler.toggle(false);
-      set_mode(Constants.mode.DEFAULT);
-      break;
-    default:
-      Ruler.toggle(true);
-      set_mode(Constants.mode.RULER);
-    }
-  },
-  ondblclick: function(){},
-  onerror: function(){},
-  onfocus: function(){},
-  onkeydown: function(){},
-  onkeypress: function(){},
-  onkeyup: function(){},
-  onload: function(){},
-  onmousedown: function(){},
-  onmousemove: function(){
-    switch (Globals.mode){
-    case Constants.mode.RULER:
-      Ruler.draw();
-      break;
-    }
-  },
-  onmouseout: function(){},
-  onmouseover: function(){},
-  onmouseup: function(){},
-  onreset: function(){},
-  onresize: function(){},
-  onselect: function(){},
-  onsubmit: function(){},
-  onunload: function(){}
-};
+
 
 /**
  * These are things that I'd rather not have
@@ -86,13 +56,41 @@ var Globals = {
     x: 0,
     y: 0
   },
-  mode: Constants.mode.DEFAULT
+  mode: [Constants.mode.DEFAULT]
 };
 
-function set_mode(mode){
-  $('#mode').html(mode);
-  Globals.mode = mode;
-}
+var Mode = {
+  push: function(mode){
+    Globals.mode.push(mode);
+  },
+  pop: function(){
+    if (Globals.mode.length <= 1){
+      if (Globals.mode.length < 1){
+	throw new Skirmisher_Error('Mode stack is empty.  What the hell.');
+      }
+      Mode.print();
+      return Constants.mode.DEFAULT;
+    } else {
+      var this_mode = Globals.mode.pop();
+      Mode.print();
+      return this_mode;
+    }
+  },
+  peek: function(){
+    Mode.print();
+    return Globals.mode[Globals.mode.length-1];
+  },
+  print: function(){
+    var mode_list = '';
+    for (var i = Globals.mode.length-1; i >= 0; i--){
+      mode_list += Globals.mode[i] + '<br />';
+    }
+    // mode_list += '--<br />';
+    // mode_list += inspect(Globals.mode);
+    $('#mode').html(mode_list);
+  }
+};
+
 /**
  * Covert offers helper functions for translating various
  * real world measurements into Skirmisher standard measurements.
