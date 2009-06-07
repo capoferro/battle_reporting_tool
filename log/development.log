@@ -4108,3 +4108,118 @@ Completed in 8ms (View: 2, DB: 0) | 200 OK [http://192.168.1.50/map]
 Processing MapController#index (for 192.168.1.199 at 2009-06-07 10:39:47) [GET]
 Rendering map/index
 Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 13:32:31) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 13:34:09) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 13:35:33) [GET]
+Rendering map/index
+Completed in 7ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:44:07) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:50:33) [GET]
+Rendering map/index
+Completed in 3ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:50:51) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:51:06) [GET]
+Rendering map/index
+Completed in 3ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:51:28) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:51:39) [GET]
+Rendering map/index
+Completed in 3ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:51:52) [GET]
+Rendering map/index
+Completed in 3ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:51:52) [GET]
+Rendering map/index
+Completed in 4ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:54:48) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:55:28) [GET]
+Rendering map/index
+Completed in 7ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:55:50) [GET]
+Rendering map/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:56:09) [GET]
+Rendering map/index
+Completed in 8ms (View: 2, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:56:15) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:56:38) [GET]
+Rendering map/index
+Completed in 3ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:57:21) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:57:51) [GET]
+Rendering map/index
+Completed in 7ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 15:58:38) [GET]
+Rendering map/index
+Completed in 3ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 16:06:46) [GET]
+Rendering map/index
+Completed in 8ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 16:07:22) [GET]
+Rendering map/index
+Completed in 6ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]
+
+
+Processing MapController#index (for 192.168.1.199 at 2009-06-07 16:07:31) [GET]
+Rendering map/index
+Completed in 3ms (View: 1, DB: 0) | 200 OK [http://192.168.1.50/map]

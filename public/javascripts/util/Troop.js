@@ -53,23 +53,24 @@ function Troop(config) {
       Default_Events.onclick();
     }
   };
-  // this.base.node.onmousedown = function(){
-  //   switch (Mode.peek()){
-  //   case Constants.mode.UNIT_SELECTED:
-  //     if (this.parent == Globals.selected) {
-  // 	this.parent.teleport.init();
-  // 	Mode.push(Constants.mode.TELEPORT);
-  //     }
-  //   default:
-  //     Default_Events.onmousedown();
-  //   }
-  // };
-  // this.base.node.onmouseup = function(){
-  //   switch (Mode.peek()){
-  //   case Constants.mode.TELEPORT:
-  //     Mode.push(Constants.mode.UNIT_SELECTED);
-  //   default:
-  //     Default_Events.onmouseup();
-  //   }
-  // };
+  this.base.node.onmousedown = function(){
+    alert('mousedown');
+    switch (Mode.peek()){
+    case Constants.mode.UNIT_SELECTED:
+      if (this.parent == Globals.selected) {
+  	this.parent.teleport.init();
+  	Mode.push(Constants.mode.TELEPORT);
+      }
+    default:
+      Default_Events.onmousedown();
+    }
+  };
+  this.base.node.onmouseup = function(){
+    switch (Mode.peek()){
+    case Constants.mode.TELEPORT:
+      Mode.push(Constants.mode.UNIT_SELECTED);
+    default:
+      Default_Events.onmouseup();
+    }
+  };
 }

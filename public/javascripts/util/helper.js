@@ -15,7 +15,7 @@ var Constants = {
   BACKWARD: 1,
   MISSING_VALUES_MESSAGE: 'Config is missing: ',
   mode: {
-    DEFAULT: 'DEFAULT',
+  DEFAULT: 'DEFAULT',
     RULER: 'RULER',
     CREATE_UNIT: 'CREATE_UNIT',
     UNIT_SELECTED: 'UNIT_SELECTED',
@@ -56,7 +56,12 @@ var Globals = {
     x: 0,
     y: 0
   },
-  mode: [Constants.mode.DEFAULT]
+  mode: [Constants.mode.DEFAULT],
+  keys: {
+    control: false,
+    alt: false,
+    shift: false
+  }
 };
 
 var Mode = {
@@ -98,7 +103,7 @@ var Mode = {
  * @class Convert
  */
 var Convert = {
-// use 10px = 1" = 25mm the universal standard
+  // use 10px = 1" = 25mm the universal standard
   inch: function(x){
     return 10*x;
   },
@@ -117,8 +122,8 @@ var Convert = {
  * @param path - path to JavaScript file.
  */
 function include(path){
-    document.write('<script src="'+path+'" type="text/javascript"></script>');
-  }
+  document.write('<script src="'+path+'" type="text/javascript"></script>');
+}
 
 /**
  * @param obj - Object to be inspected
@@ -145,11 +150,33 @@ function tmp(str){
  * Things to be done when the page loads.
  */
 jQuery(document).ready(function(){
-  $().mousemove(function(e){
-		  Globals.mouse.x = e.pageX - Globals.$paper().position().left;
-		  Globals.mouse.y = e.pageY - Globals.$paper().position().top;
-		});
-  });
+			 $().mousemove(function(e){
+					 Globals.mouse.x = e.pageX - Globals.$paper().position().left;
+					 Globals.mouse.y = e.pageY - Globals.$paper().position().top;
+				       });
+			 $().keydown(function(e){
+				       switch (e.which){
+				       case 17:
+					 Globals.keys.control = true;
+					 break;
+				       case 16:
+					 Globals.keys.shift = true;
+					 break;
+				       default:
+				       }
+				     });
+			 $().keyup(function(e){
+				     switch (e.which){
+				     case 17:
+				       Globals.keys.control = false;
+				       break;
+				     case 16:
+				       Globals.keys.shift = false;
+				       break;
+				     default:
+				     }
+				   });
+		       });
 
 
 
