@@ -24,6 +24,50 @@ var Constants = {
 };
 
 /**
+ * Default event functions for when an object does not have one explicitly defined.
+ */
+
+var Default_Events = {
+  onabort: function(){},
+  onblur: function(){},
+  onchange: function(){},
+  onclick: function(){
+    switch (Globals.mode){
+    case Constants.mode.RULER:
+      Ruler.toggle(false);
+      set_mode(Constants.mode.DEFAULT);
+      break;
+    default:
+      Ruler.toggle(true);
+      set_mode(Constants.mode.RULER);
+    }
+  },
+  ondblclick: function(){},
+  onerror: function(){},
+  onfocus: function(){},
+  onkeydown: function(){},
+  onkeypress: function(){},
+  onkeyup: function(){},
+  onload: function(){},
+  onmousedown: function(){},
+  onmousemove: function(){
+    switch (Globals.mode){
+    case Constants.mode.RULER:
+      Ruler.draw();
+      break;
+    }
+  },
+  onmouseout: function(){},
+  onmouseover: function(){},
+  onmouseup: function(){},
+  onreset: function(){},
+  onresize: function(){},
+  onselect: function(){},
+  onsubmit: function(){},
+  onunload: function(){}
+};
+
+/**
  * These are things that I'd rather not have
  * to pass around as parameters, as there's
  * no reason to have more than one of each.
@@ -84,9 +128,9 @@ function include(path){
 function inspect(obj){
   var str = '';
   for (i in obj){
-    str += i + ': ' + obj[i] + "\n";
+    str += i + ': ' + obj[i] + "<br />\n";
   }
-  tmp(str);
+  return str;
 
 }
 

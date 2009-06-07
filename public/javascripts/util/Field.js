@@ -54,13 +54,11 @@ var Field = function(config) {
       Globals.selected = last_unit;
       set_mode(Constants.mode.DEFAULT);
       break;
-    case Constants.mode.RULER:
-      Ruler.toggle(false);
-      set_mode(Constants.mode.DEFAULT);
+    case Constants.mode.UNIT_PIVOT:
+      Globals.selected.pivot();
       break;
     default:
-      Ruler.toggle(true);
-      set_mode(Constants.mode.RULER);
+      Default_Events.onclick();
     }
   };
   // this.field.node.ondblclick = function(){};
@@ -72,16 +70,9 @@ var Field = function(config) {
   // this.field.node.onload = function(){};
   // this.field.node.onmousedown = function(){};
   this.field.node.onmousemove = function(){
-  // This should always be the same as the Ruler onmove.
     switch(Globals.mode){
-    case Constants.mode.RULER:
-      Ruler.draw();
-      break;
-    case Constants.mode.UNIT_PIVOT:
-      Globals.selected.pivot();
-      break;
     default:
-      break;
+      Default_Events.onmousemove();
     }
   };
   // this.field.node.onmouseout = function(){};

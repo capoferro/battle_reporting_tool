@@ -10,6 +10,7 @@
  * @cfg fill_color {string} - fill color
  */
 function Unit(config) {
+  var unit_self = this;
   /**
    * Constructor
    * @param config {hash} - see {@link Unit}
@@ -44,6 +45,12 @@ function Unit(config) {
     this.wheel_direction = (config.wheel_direction === undefined)? Constants.LEFT : this.wheel_direction = config.wheel_direction;
     this.unit_width = this.files * this.base.width;
     this.skirmishing = (config.skirmishing === undefined)? false : config.skirmishing;
+    this.ranks = this.model_count / this.files;
+    this.unit_depth = this.ranks * this.base.width;
+    this.unit_center = {
+      x: this.x + this.unit_width/2,
+      y: this.y + this.unit_depth/2
+    };
 
     // Don't allow theta to get ungodly and uneccessarily large.
     while (this.theta > 2*Math.PI){
@@ -65,10 +72,10 @@ function Unit(config) {
     /**
      * Number of models deep
      */
-    this.ranks = this.model_count / this.files;
     if (this.model_count % this.files > 0) {
       this.ranks++;
     }
+
     /**
      * Matrix of troops
      */
@@ -144,24 +151,6 @@ function Unit(config) {
         direction = this.wheel_direction;
       }
     }
-    this.pivot = function(){
-      var unit_center = {
-	x: this.unit_width/2 + this.x,
-	y: this.ranks*this.base.height/2 + this.y
-      };
-      var mouse_offset = {
-	x: Globals.mouse.x - unit_center.x,
-	y: -1*(Globals.mouse.y - unit_center.y)
-      };
-      mouse_offset.theta = (mouse_offset.x > 0)?Math.atan(mouse_offset.y/mouse_offset.x):Math.atan2(mouse_offset.y,mouse_offset.x);
-
-      var new_config = this.get_config();
-      new_config.theta = mouse_offset.theta - Math.PI/2;
-      tmp('Unit center: ('+unit_center.x+', '+unit_center.y+')'
-	 + '<br /> Mouse offset: ('+mouse_offset.x+', '+mouse_offset.y+')'
-	 + '<br /> Theta: ' + new_config.theta);
-      this.draw(new_config);
-    };
     // This conditional block is to allow this.draw()
     // to call this.wheel(0) without causing an infinite
     // recursion loop.
@@ -235,6 +224,29 @@ function Unit(config) {
     new_config.y += y_offset;
     this.draw(new_config);
     return this;
+  };
+
+  /**
+   * Points the front of the unit at the mouse.
+   */
+    this.pivot = function(){
+
+    };
+
+  this.teleport = function(){
+    var teleport_self = this;
+    this.init = function(){
+      teleport_self.click_offset = {
+	x: Globals.mouse.x - this.x,
+	y: Globals.mouse.y - this.y
+      };
+    };
+    this.go = function(){
+      var new_config = unit_self.get_config();
+      new_config.x += Globals.mouse.x + teleport_self.click_offset.x;
+      new_config.y += Globals.mouse.y + teleport_self.click_offset.y;
+      unit_self.draw(new_config);
+    };
   };
 
   /**
