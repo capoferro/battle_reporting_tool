@@ -7,6 +7,9 @@ var Default_Events = {
   onchange: function(){},
   onclick: function(){
     switch (Mode.peek()){
+    case Constants.mode.TELEPORT:
+      Mode.pop();
+      break;
     case Constants.mode.RULER:
       Ruler.toggle(false);
       Mode.pop();
@@ -39,6 +42,9 @@ var Default_Events = {
     switch (Mode.peek()){
     case Constants.mode.RULER:
       Ruler.draw();
+      break;
+    case Constants.mode.TELEPORT:
+      Globals.selected.teleport_go();
       break;
     }
   },

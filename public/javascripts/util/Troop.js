@@ -34,12 +34,19 @@ function Troop(config) {
   this.base.node.onclick = function(){
     switch (Mode.peek()){
     case Constants.mode.UNIT_SELECTED:
-      if (Globals.selected === troop_self.parent){
-	troop_self.parent.unselect();
-	Mode.pop();
+      if (Globals.keys.control){
+	if (troop_self.parent == Globals.selected) {
+  	troop_self.parent.teleport_init();
+  	Mode.push(Constants.mode.TELEPORT);
+	}
       } else {
-	Globals.selected.unselect();
-	troop_self.parent.select();
+	if (Globals.selected === troop_self.parent){
+	  troop_self.parent.unselect();
+	  Mode.pop();
+	} else {
+	  Globals.selected.unselect();
+	  troop_self.parent.select();
+	}
       }
       break;
     case Constants.mode.UNIT_PIVOT:
@@ -51,26 +58,6 @@ function Troop(config) {
       break;
     default:
       Default_Events.onclick();
-    }
-  };
-  this.base.node.onmousedown = function(){
-    alert('mousedown');
-    switch (Mode.peek()){
-    case Constants.mode.UNIT_SELECTED:
-      if (this.parent == Globals.selected) {
-  	this.parent.teleport.init();
-  	Mode.push(Constants.mode.TELEPORT);
-      }
-    default:
-      Default_Events.onmousedown();
-    }
-  };
-  this.base.node.onmouseup = function(){
-    switch (Mode.peek()){
-    case Constants.mode.TELEPORT:
-      Mode.push(Constants.mode.UNIT_SELECTED);
-    default:
-      Default_Events.onmouseup();
     }
   };
 }

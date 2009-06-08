@@ -22,7 +22,7 @@ h4. v0.3
 
 * -Modal event handlers-
 * Skirmishing units
-** Teleport (direct line) movement
+** -Teleport (direct line) movement-
 ** Skirmishing placement
 ** Pivot
 * Monsters

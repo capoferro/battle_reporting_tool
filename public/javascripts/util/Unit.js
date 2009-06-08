@@ -233,20 +233,23 @@ function Unit(config) {
 
     };
 
-  this.teleport = function(){
-    var teleport_self = this;
-    this.init = function(){
-      teleport_self.click_offset = {
-	x: Globals.mouse.x - unit_self.x,
-	y: Globals.mouse.y - unit_self.y
-      };
+  // I would put Teleport as it's own object, but for some reason I can't get that to work.  For now, this will work.
+  // TODO: rewrite this some day.
+  this.teleport_data = undefined;
+  this.teleport_init = function(){
+    unit_self.teleport_data = {};
+    unit_self.teleport_data.click_offset = {
+      x: Globals.mouse.x - unit_self.x,
+      y: Globals.mouse.y - unit_self.y
     };
-    this.go = function(){
+  };
+  this.teleport_go = function(){
+    if (unit_self.teleport_data){
       var new_config = unit_self.get_config();
-      new_config.x += Globals.mouse.x + teleport_self.click_offset.x;
-      new_config.y += Globals.mouse.y + teleport_self.click_offset.y;
+      new_config.x = Globals.mouse.x + unit_self.teleport_data.click_offset.x;
+      new_config.y = Globals.mouse.y + unit_self.teleport_data.click_offset.y;
       unit_self.draw(new_config);
-    };
+    }
   };
 
   /**
