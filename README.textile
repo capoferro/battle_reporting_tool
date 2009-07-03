@@ -24,9 +24,9 @@ h4. v0.3
 * Skirmishing units
 ** -Teleport (direct line) movement-
 ** Skirmishing placement
-** Pivot
-* Monsters
-* Chariots
+** -Pivot-
+* -Monsters-
+* -Chariots-
 
 h4. v0.4
 
