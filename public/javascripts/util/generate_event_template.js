@@ -22,9 +22,6 @@ var Default_Events = {
       Globals.selected = last_unit;
       Mode.pop();
       break;
-    case Constants.mode.UNIT_PIVOT:
-      Globals.selected.pivot();
-      break;
     default:
       Ruler.toggle(true);
       Mode.push(Constants.mode.RULER);
@@ -40,6 +37,9 @@ var Default_Events = {
   onmousedown: function(){},
   onmousemove: function(){
     switch (Mode.peek()){
+    case Constants.mode.UNIT_PIVOT:
+        Globals.selected.pivot_to_mouse();
+        break;
     case Constants.mode.RULER:
       Ruler.draw();
       break;

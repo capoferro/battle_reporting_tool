@@ -6,9 +6,21 @@
  * @cfg y {int} - y coordinate of top left corner of base
  * @cfg base {Base} - base object
  * @cfg fill_color {string} - fill color
+ * @cfg parent {Unit} - Unit containing the troop.
+ * @cfg selected {boolean} - Whether or not the unit is selected.
  */
 function Troop(config) {
   var troop_self = this;
+  this.get_config = function(){
+    return {
+      parent: troop_self.parent,
+      x: troop_self.x,
+      y: troop_self.y,
+      fill_color: troop_self.fill_color,
+      selected: troop_self.selected,
+      stroke_color: troop_self.stroke_color
+    };
+  };
   this.parent = config.parent;
   this.x = config.x;
   this.y = config.y;

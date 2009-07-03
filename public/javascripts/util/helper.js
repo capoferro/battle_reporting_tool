@@ -20,7 +20,8 @@ var Constants = {
     CREATE_UNIT: 'CREATE_UNIT',
     UNIT_SELECTED: 'UNIT_SELECTED',
     UNIT_PIVOT: 'UNIT_PIVOT',
-    TELEPORT: 'TELEPORT'
+    TELEPORT: 'TELEPORT',
+    PLACE_SKIRMISHERS: 'PLACE_SKIRMISHERS'
   },
   paper: {
     WIDTH: 750,
@@ -90,8 +91,6 @@ var Mode = {
     for (var i = Globals.mode.length-1; i >= 0; i--){
       mode_list += Globals.mode[i] + '<br />';
     }
-    // mode_list += '--<br />';
-    // mode_list += inspect(Globals.mode);
     $('#mode').html(mode_list);
   }
 };
@@ -115,6 +114,9 @@ var Convert = {
   },
   degrees: function(radians){
     return radians*(180/Math.PI);
+  },
+  radians: function(degrees){
+	  return degrees*(Math.PI/180);
   }
 };
 

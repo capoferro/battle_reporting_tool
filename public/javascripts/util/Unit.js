@@ -14,7 +14,6 @@ function Unit(config) {
   /**
    * Constructor
    * @param config {hash} - see {@link Unit}
-   * @param paper {Raphael} - rendering target
    */
   this.init = function(config) {
     this.draw(config);
@@ -28,15 +27,16 @@ function Unit(config) {
     if (config === undefined){
       config = this.get_config();
     }
+    this.old_config = this.get_config();
     if (this.troop_set !== undefined){
       this.troop_set.remove();
     }
     if (config.files === undefined){
-      throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.files');} else {this.files = config.files;};
+      Skirmisher_Error(Constants.MISSING_VALUES_MESSAGE + 'config.files');} else {this.files = config.files;};
     if (config.model_count === undefined){
-      throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.model_count');} else {this.model_count = config.model_count;}
+      Skirmisher_Error(Constants.MISSING_VALUES_MESSAGE + 'config.model_count');} else {this.model_count = config.model_count;}
     if (config.base === undefined){
-      throw new Error (Constants.MISSING_VALUES_MESSAGE + 'config.base');} else {this.base = config.base;}
+      Skirmisher_Error(Constants.MISSING_VALUES_MESSAGE + 'config.base');} else {this.base = config.base;}
     this.x =          (config.x === undefined)?          0      : config.x;
     this.y =          (config.y === undefined)?          0      : config.y;
     this.theta =      (config.theta === undefined)?      0      : config.theta;
@@ -46,13 +46,29 @@ function Unit(config) {
     this.unit_width = this.files * this.base.width;
     this.skirmishing = (config.skirmishing === undefined)? false : config.skirmishing;
     this.ranks = this.model_count / this.files;
-    this.unit_depth = this.ranks * this.base.width;
-    this.unit_center = {
-      x: this.x + this.unit_width/2,
-      y: this.y + this.unit_depth/2
-    };
+    this.unit_height = this.ranks * this.base.height;
+    /**
+     * Relative to this.x, this.y
+     */
+    this.unrotated_center = {
+	x: this.x + this.unit_width/2,
+	y: this.y + this.unit_height/2
+      };
 
-    // Don't allow theta to get ungodly and uneccessarily large.
+    /**
+     * Returns the coords relative to this.x, this.y
+     */
+    function calculate_unit_center(){
+      var new_coords = _rotate_point((unit_self.unrotated_center.x - unit_self.x), (unit_self.unrotated_center.y - unit_self.y), -1*unit_self.theta);
+      return {
+	x: (unit_self.x + new_coords.x),
+	y: (unit_self.y + new_coords.y)
+      };
+    }
+
+    this.unit_center = calculate_unit_center();
+
+    // Don't allow theta to get ungodly and unneccessarily large.
     while (this.theta > 2*Math.PI){
       this.theta -= 2*Math.PI;
       }
@@ -68,6 +84,63 @@ function Unit(config) {
     } else {
       throw new Error('paper is undefined');
     }
+
+    // Draw unit
+    if (this.skirmishing){
+      this.draw_skirmishing();
+    } else {
+      this.draw_rank_and_file();
+    }
+
+  };
+
+  /**
+   * Check if there's already a list of skirmisher locations
+   * If so, draw with the current locations.
+   * If not, enter PLACE_SKIRMISHERS mode.
+   */
+  this.draw_skirmishing = function(){
+    if (this.skirmisher_list === undefined) {
+      Mode.push(Constants.mode.PLACE_SKIRMISHERS);
+    } else {
+      // Redraw.
+    }
+
+  };
+
+  /**
+   * On click for Constants.mode.PLACE_SKIRMISHERS
+   */
+  this.place_skirmisher = function(){
+    if (Mode.peek() != Constants.mode.PLACE_SKIRMISHERS) {
+      Skirmisher_Error('In place_skirmisher, not in proper mode.');
+    }
+    if (this.skirmisher_list === undefined) {
+      this.skirmisher_list = [];
+    }
+    var new_troop;
+    if (this.skirmisher_list.length < this.model_count) {
+      new_troop = new Troop({ x: Globals.mouse.x,
+			      y: Globals.mouse.y,
+			      base: unit_self.base,
+			      fill_color: unit_self.fill_color,
+			      selected: unit_self.selected,
+			      parent: unit_self });
+      this.skirmisher_list.push(new_troop);
+      this.troop_set.push(new_troop);
+    }
+    if (this.skirmisher_list.length == this.model_count) {
+      if (Mode.peek() == Constants.mode.PLACE_SKIRMISHERS) {
+	Mode.pop();
+      } else {
+	Skirmisher_Error('Mode out of sync.  Should be PLACE_SKIRMISHERS. Is ' + Mode.peek());
+      }
+    } else if (this.skirmisher_list.length > this.model_count) {
+      Skirmisher_Error('There are more skirmishers than allowed by model count.');
+    }
+  };
+
+  this.draw_rank_and_file = function(){
 
     /**
      * Number of models deep
@@ -138,6 +211,59 @@ function Unit(config) {
     // Evaluate the current set wheel that was passed in by the config.
     this.wheel(0, this.direction);
   };
+
+  /**
+   * Use the mouse as the reference by which to orient the unit.
+   */
+  this.pivot_to_mouse = function(){
+	var delta = {
+			y: Globals.mouse.y - this.unrotated_center.y,
+			x: Globals.mouse.x - this.unrotated_center.x
+	};
+	var new_theta = (delta.y < 0)?Math.atan(delta.x/delta.y):(Math.PI + Math.atan2(delta.x, delta.y));
+    this.do_pivot(new_theta);
+  };
+
+  /**
+   * Perform a pivot - center of rotation on center of unit.
+   * @param theta {float} - angle of rotation
+   */
+  this.do_pivot = function(theta) {
+    var new_config = this.get_config();
+    var old_center = this.unit_center;
+    new_config.theta = theta;
+    this.draw(new_config);
+    new_config = this.get_config();
+    var new_center = this.unit_center;
+    new_config.x -= new_center.x - old_center.x;
+    new_config.y -= new_center.y - old_center.y;
+    this.draw(new_config);
+  };
+
+  this.mark_centers = function() {
+    var uncenter = Globals.paper.ellipse(this.x, this.y, 5, 10);
+    uncenter.attr('fill', 'blue');
+    var center = Globals.paper.ellipse(this.x, this.y, 10, 5);
+    center.attr('fill', 'red');
+    uncenter.animate({cx: this.unrotated_center.x, cy: this.unrotated_center.y}, 1000);
+    center.animate({cx: this.unit_center.x, cy: this.unit_center.y}, 1000);
+  };
+
+  /**
+   * Returns the coords after the rotation relative
+   * to the center of rotation.
+   * @param x {float} - x coord relative to the center of rotation
+   * @param y {float} - y coord relative to the center of rotation
+   * @param theta {float} - angle of rotation
+   */
+  function _rotate_point(x, y, theta) {
+	var new_coords = {};
+    // Matrix rotation
+    new_coords.x = (x*Math.cos(theta)) - (y*Math.sin(theta));
+    new_coords.y = (x*Math.sin(theta)) + (y*Math.cos(theta));
+    return new_coords;
+  };
+
   /**
    * Perform a wheel - pivot on a front corner and turn.
    * @param inches {float} - Arc distance, in inches
@@ -218,20 +344,12 @@ function Unit(config) {
     var distance = direction * Convert.inch(inches);
     var x_offset = distance * Math.sin(this.theta);
     var y_offset = distance * Math.cos(this.theta);
-    tmp('moving (x,y): ('+x_offset+','+y_offset+')');
     var new_config = this.get_config();
     new_config.x += x_offset;
     new_config.y += y_offset;
     this.draw(new_config);
     return this;
   };
-
-  /**
-   * Points the front of the unit at the mouse.
-   */
-    this.pivot = function(){
-
-    };
 
   // I would put Teleport as it's own object, but for some reason I can't get that to work.  For now, this will work.
   // TODO: rewrite this some day.
